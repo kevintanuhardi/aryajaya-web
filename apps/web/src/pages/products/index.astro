@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { productCategories } from '../../data/categories';
+import { products } from '../../data/products';
+
+const categoryFilter = Astro.url.searchParams.get('category') ?? 'all';
+const filteredProducts = categoryFilter === 'all'
+  ? products
+  : products.filter((product) => product.categoryId === categoryFilter);
+---
+<BaseLayout title="Produk Arjaya" description="Katalog contoh alat kesehatan ortopedi dan navigasi">
+  <section class="bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-brand">Katalog</p>
+          <h1 class="text-4xl font-semibold text-slate-900">Produk Orthopedic & Spine</h1>
+          <p class="mt-2 text-sm text-slate-600">Data ini bersifat contoh publik. Hubungi kami untuk katalog resmi Arjaya Langgeng Medika.</p>
+        </div>
+        <form class="flex gap-3 text-sm" method="get">
+          <label class="flex flex-col gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Filter kategori
+            <select name="category" class="rounded-xl border border-slate-200 px-4 py-2 text-sm" onchange="this.form.submit()">
+              <option value="all" selected={categoryFilter === 'all' ? true : undefined}>Semua kategori</option>
+              {productCategories.map((category) => (
+                <option value={category.id} selected={categoryFilter === category.id ? true : undefined}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        </form>
+      </div>
+      <div class="grid gap-6">
+        {filteredProducts.map((product) => (
+          <ProductCard product={product} compact />
+        ))}
+      </div>
+      {filteredProducts.length === 0 && (
+        <p class="mt-10 rounded-2xl bg-slate-50 px-4 py-6 text-center text-sm text-slate-600">
+          Tidak ada produk dalam kategori ini untuk sementara.
+        </p>
+      )}
+      <p class="mt-10 text-xs uppercase tracking-wide text-rose-500 text-center">Sample data mengambil inspirasi dari portofolio publik produsen internasional.</p>
+    </div>
+  </section>
+</BaseLayout>

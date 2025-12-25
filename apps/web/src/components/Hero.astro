@@ -1,0 +1,45 @@
+---
+import WhatsappButton from './WhatsappButton.astro';
+import { siteSettings } from '../data/siteSettings';
+---
+<section class="bg-gradient-to-br from-white via-slate-50 to-emerald-50">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-2 md:items-center">
+    <div class="space-y-6">
+      <p class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1 text-xs font-semibold uppercase tracking-wide text-brand shadow">
+        Orthopedic & Spine Specialists
+      </p>
+      <h1 class="text-4xl font-semibold leading-tight text-slate-900 md:text-5xl">
+        {siteSettings.name}
+      </h1>
+      <p class="text-lg text-slate-600">
+        Mitra distribusi alat kesehatan ortopedi, tulang belakang, dan navigasi ruang operasi untuk rumah sakit dan klinik di Indonesia.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <WhatsappButton size="lg" />
+        <a href="/products" class="inline-flex items-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700">
+          Lihat Produk
+        </a>
+      </div>
+    </div>
+    <div class="rounded-3xl bg-white p-6 shadow-2xl shadow-brand/10">
+      <dl class="grid grid-cols-2 gap-6 text-center">
+        <div>
+          <dt class="text-sm text-slate-500">Kategori Produk</dt>
+          <dd class="text-3xl font-semibold text-slate-900">3</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-slate-500">Fokus Klinis</dt>
+          <dd class="text-3xl font-semibold text-slate-900">Ortopedi</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-slate-500">Area Layanan</dt>
+          <dd class="text-3xl font-semibold text-slate-900">Nasional</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-slate-500">Respons WA</dt>
+          <dd class="text-3xl font-semibold text-slate-900">&lt; 1 hari</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>

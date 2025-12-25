@@ -1,0 +1,20 @@
+---
+import { productCategories } from '../data/categories';
+---
+<section class="bg-white">
+  <div class="mx-auto max-w-6xl px-4 py-16">
+    <div class="mb-10 max-w-2xl">
+      <p class="text-sm font-semibold uppercase tracking-wide text-brand">Lini Produk</p>
+      <h2 class="text-3xl font-semibold text-slate-900">Fokus klinis Arjaya Langgeng Medika</h2>
+      <p class="mt-4 text-slate-600">Kategori produk prioritas untuk mendukung rumah sakit ortopedi dan bedah tulang belakang.</p>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      {productCategories.map((category) => (
+        <article class="rounded-2xl border border-slate-100 bg-slate-50/60 p-6">
+          <p class="text-sm font-semibold text-brand">{category.name}</p>
+          <p class="mt-2 text-sm text-slate-600">{category.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

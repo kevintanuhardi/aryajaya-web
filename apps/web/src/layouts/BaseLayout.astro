@@ -1,0 +1,30 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/global.css';
+
+const { title = 'Arjaya Langgeng Medika', description = 'Distribusi alat kesehatan ortopedi', structuredData } = Astro.props as {
+  title?: string;
+  description?: string;
+  structuredData?: Record<string, unknown>;
+};
+---
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {structuredData && (
+      <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+    )}
+  </head>
+  <body class="text-slate-900">
+    <SiteHeader />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

@@ -1,0 +1,23 @@
+---
+import { licenses } from '../data/licenses';
+---
+<section class="bg-slate-900 text-slate-100">
+  <div class="mx-auto max-w-6xl px-4 py-16">
+    <div class="mb-10 max-w-2xl">
+      <p class="text-sm font-semibold uppercase tracking-wide text-amber-300">Licenses & Compliance</p>
+      <h2 class="text-3xl font-semibold">Komitmen regulasi yang sedang kami perbarui</h2>
+      <p class="mt-4 text-slate-300">
+        Informasi berikut adalah placeholder hingga dokumen resmi selesai diverifikasi. Hubungi kami untuk update terbaru.
+      </p>
+    </div>
+    <div class="grid gap-6 md:grid-cols-3">
+      {licenses.map((license) => (
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
+          <h3 class="text-lg font-semibold">{license.title}</h3>
+          <p class="mt-2 text-sm text-slate-300">{license.description}</p>
+          <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-amber-300">Placeholder</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

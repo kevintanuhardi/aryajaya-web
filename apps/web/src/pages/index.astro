@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import CategoryHighlights from '../components/CategoryHighlights.astro';
+import LicenseList from '../components/LicenseList.astro';
+import InquiryBanner from '../components/InquiryBanner.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+
+const featured = products.slice(0, 2);
+---
+<BaseLayout title="Arjaya Langgeng Medika" description="Distribusi alat kesehatan ortopedi, tulang belakang, dan navigasi" structuredData={{
+  '@context': 'https://schema.org',
+  '@type': 'MedicalBusiness',
+  name: 'Arjaya Langgeng Medika',
+  medicalSpecialty: ['Orthopedic', 'Spine'],
+  url: 'https://www.arjaya.example'
+}}>
+  <Hero />
+  <section class="bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <div class="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-brand">Produk unggulan</p>
+          <h2 class="text-3xl font-semibold text-slate-900">Contoh portofolio ortopedi</h2>
+        </div>
+        <a href="/products" class="text-sm font-semibold text-brand">Lihat semua produk →</a>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2">
+        {featured.map((product) => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+      <p class="mt-6 text-xs uppercase tracking-wide text-rose-500">Sample data — ganti dengan katalog resmi Arjaya.</p>
+    </div>
+  </section>
+  <CategoryHighlights />
+  <LicenseList />
+  <InquiryBanner />
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import InquiryBanner from '../components/InquiryBanner.astro';
+---
+<BaseLayout title="Tentang Arjaya" description="Profil perusahaan Arjaya Langgeng Medika">
+  <section class="bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-16">
+      <p class="text-sm font-semibold uppercase tracking-wide text-brand">Tentang kami</p>
+      <h1 class="mt-2 text-4xl font-semibold text-slate-900">Misi menghadirkan solusi ortopedi yang bertanggung jawab</h1>
+      <div class="mt-8 grid gap-10 md:grid-cols-2">
+        <div class="space-y-4 text-slate-600">
+          <p>
+            Arjaya Langgeng Medika fokus pada distribusi alat kesehatan ortopedi, tulang belakang, dan navigasi ruang operasi untuk fasilitas kesehatan di Indonesia. Kami berkolaborasi dengan dokter dan rumah sakit untuk menghadirkan produk yang aman, teruji, dan relevan.
+          </p>
+          <p>
+            Tim kami terdiri dari profesional klinis yang memahami kebutuhan prosedur trauma hingga deformity. Kami membantu tim bedah memilih portofolio yang tepat sesuai protokol rumah sakit.
+          </p>
+        </div>
+        <div class="space-y-4 text-slate-600">
+          <p>
+            Kami memprioritaskan kecepatan layanan, kepatuhan regulasi, dan edukasi produk. Seluruh konten pada situs ini berfungsi sebagai referensi awal sebelum konsultasi resmi.
+          </p>
+          <p class="rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">
+            <strong class="block text-slate-800">Disclaimer:</strong>
+            Informasi di website ini bersifat edukatif dan bukan pengganti konsultasi dokter. Penggunaan alat kesehatan mengikuti indikasi dan petunjuk penggunaan resmi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <InquiryBanner />
+</BaseLayout>

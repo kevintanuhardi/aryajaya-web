@@ -1,0 +1,37 @@
+---
+import { siteSettings } from '../data/siteSettings';
+---
+<footer class="bg-slate-900 text-slate-100">
+  <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:items-start md:justify-between">
+    <div class="space-y-3">
+      <p class="text-lg font-semibold">{siteSettings.name}</p>
+      <p class="text-sm text-slate-300">{siteSettings.tagline}</p>
+      <p class="text-xs text-amber-200 max-w-xl">
+        {siteSettings.disclaimer}
+      </p>
+    </div>
+    <div class="space-y-2 text-sm">
+      <p class="font-semibold text-white">Kontak</p>
+      <p>{siteSettings.address}</p>
+      <a class="text-brand block" href={siteSettings.mapUrl} target="_blank" rel="noreferrer">
+        Lihat lokasi di Google Maps
+      </a>
+      <p>WhatsApp: {siteSettings.whatsapp}</p>
+    </div>
+    <div class="space-y-2 text-sm">
+      <p class="font-semibold text-white">Ikuti Kami</p>
+      <ul class="space-y-1">
+        {siteSettings.socials.map((social) => (
+          <li>
+            <a href={social.url} target="_blank" rel="noreferrer" class="hover:text-brand">
+              {social.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-slate-800 px-4 py-4 text-center text-xs text-slate-400">
+    © {new Date().getFullYear()} {siteSettings.name}. Hak cipta dilindungi.
+  </div>
+</footer>
