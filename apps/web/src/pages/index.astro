@@ -1,13 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import CategoryHighlights from '../components/CategoryHighlights.astro';
+import HeroSlider from '../components/HeroSlider.astro';
+import FeaturedServices from '../components/FeaturedServices.astro';
+import PartnersCarousel from '../components/PartnersCarousel.astro';
+import VisionMission from '../components/VisionMission.astro';
 import LicenseList from '../components/LicenseList.astro';
 import InquiryBanner from '../components/InquiryBanner.astro';
-import ProductCard from '../components/ProductCard.astro';
-import { products } from '../data/products';
-
-const featured = products.slice(0, 2);
+import { heroSlides, featuredServices, partners, visionMission } from '../data/home';
 ---
 <BaseLayout title="Arjaya Langgeng Medika" description="Distribusi alat kesehatan ortopedi, tulang belakang, dan navigasi" structuredData={{
   '@context': 'https://schema.org',
@@ -16,25 +15,10 @@ const featured = products.slice(0, 2);
   medicalSpecialty: ['Orthopedic', 'Spine'],
   url: 'https://www.arjaya.example'
 }}>
-  <Hero />
-  <section class="bg-white">
-    <div class="mx-auto max-w-6xl px-4 py-16">
-      <div class="mb-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-wide text-brand">Produk unggulan</p>
-          <h2 class="text-3xl font-semibold text-slate-900">Contoh portofolio ortopedi</h2>
-        </div>
-        <a href="/products" class="text-sm font-semibold text-brand">Lihat semua produk →</a>
-      </div>
-      <div class="grid gap-6 md:grid-cols-2">
-        {featured.map((product) => (
-          <ProductCard product={product} />
-        ))}
-      </div>
-      <p class="mt-6 text-xs uppercase tracking-wide text-rose-500">Sample data — ganti dengan katalog resmi Arjaya.</p>
-    </div>
-  </section>
-  <CategoryHighlights />
+  <HeroSlider slides={heroSlides} />
+  <FeaturedServices services={featuredServices} />
+  <PartnersCarousel items={partners} />
+  <VisionMission content={visionMission} />
   <LicenseList />
   <InquiryBanner />
 </BaseLayout>
