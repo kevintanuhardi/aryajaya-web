@@ -24,3 +24,4 @@ apps/studio/.env*
 .DS_Store
 .idea/
 .vscode/
+.vercel
