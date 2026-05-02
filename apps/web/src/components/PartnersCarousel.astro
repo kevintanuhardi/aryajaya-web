@@ -1,10 +1,10 @@
 ---
 import type { partners } from '../data/home';
 const { items } = Astro.props as { items: typeof partners };
-const placeholderImage =
-  'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80';
+const fallbackImage = '/images/client/logos/arjaya.png';
+const sliderId = `partners-slider-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<section class="bg-slate-50">
+<section class="bg-slate-50" data-partners-slider={sliderId}>
   <div class="mx-auto max-w-6xl px-4 py-16">
     <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
@@ -13,38 +13,36 @@ const placeholderImage =
       </div>
     </div>
     <div class="relative">
-      <div class="partner-track flex gap-4 overflow-x-auto scroll-smooth pb-4" aria-label="Partner carousel">
-        {items.map((partner, idx) => (
-          <article class="min-w-[240px] flex-1 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm snap-center" data-index={idx}>
-            <div class="h-32 w-full overflow-hidden rounded-xl bg-slate-100">
-              <img
-                src={partner.image || placeholderImage}
-                alt={partner.name}
-                class="h-full w-full object-cover"
-                loading="lazy"
-              />
+      <div class="overflow-hidden">
+        <div class="partner-track flex transition-transform duration-500 ease-out" aria-label="Partner carousel">
+          {items.map((partner) => (
+            <div class="w-full flex-none px-2 md:w-1/2 lg:w-1/3">
+              <article class="h-full rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+                <div class="h-32 w-full overflow-hidden rounded-xl bg-slate-100">
+                  <img
+                    src={partner.image || fallbackImage}
+                    alt={partner.name}
+                    class="h-full w-full object-contain p-4"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="mt-4 space-y-1">
+                  <p class="text-sm font-semibold text-slate-900">{partner.name}</p>
+                  <p class="text-xs text-slate-500">{partner.subtitle}</p>
+                </div>
+              </article>
             </div>
-            <div class="mt-4 space-y-1">
-              <p class="text-sm font-semibold text-slate-900">{partner.name}</p>
-              <p class="text-xs text-slate-500">{partner.subtitle}</p>
-            </div>
-          </article>
-        ))}
+          ))}
+        </div>
       </div>
-      <button class="p-nav left-0" aria-label="Partner sebelumnya">‹</button>
-      <button class="p-nav right-0" aria-label="Partner berikutnya">›</button>
-      <div class="p-dots mt-4 flex justify-center gap-2">
-        {items.map((_, idx) => (
-          <button class="dot h-2.5 w-2.5 rounded-full bg-slate-300" data-index={idx} aria-label={`Partner ${idx + 1}`}></button>
-        ))}
-      </div>
+      <button class="p-nav left-0" type="button" data-prev aria-label="Partner sebelumnya">‹</button>
+      <button class="p-nav right-0" type="button" data-next aria-label="Partner berikutnya">›</button>
+      <div class="p-dots mt-4 flex justify-center gap-2" data-dots></div>
     </div>
   </div>
 </section>
 
 <style>
-  .partner-track { scroll-snap-type: x mandatory; }
-  .partner-track::-webkit-scrollbar { display: none; }
   .p-nav {
     position: absolute;
     top: 50%;
@@ -55,26 +53,82 @@ const placeholderImage =
     color: #0f172a;
     border: 1px solid rgba(226, 232, 240, 0.9);
     box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
-    display: none;
   }
-  @media (min-width: 768px) { .p-nav { display: block; } }
   .p-nav:hover { background: #f8fafc; }
-  .dot.active { background: #0D7C66; }
+  .p-dot.active { background: #0D7C66; }
 </style>
 
-<script>
-  const track = document.querySelector('.partner-track');
-  const cards = Array.from(track?.children || []);
-  const dots = Array.from(document.querySelectorAll('.p-dots .dot'));
-  let index = 0;
-  const go = (i) => {
-    if (!track) return;
-    index = (i + cards.length) % cards.length;
-    track.scrollTo({ left: cards[index].offsetLeft - 16, behavior: 'smooth' });
-    dots.forEach((d, j) => d.classList.toggle('active', j === index));
-  };
-  document.querySelector('.p-nav.left-0')?.addEventListener('click', () => go(index - 1));
-  document.querySelector('.p-nav.right-0')?.addEventListener('click', () => go(index + 1));
-  dots.forEach((dot, i) => dot.addEventListener('click', () => go(i)));
-  go(0);
+<script define:vars={{ sliderId }}>
+  const root = document.querySelector(`[data-partners-slider="${sliderId}"]`);
+  if (root) {
+    const track = root.querySelector('.partner-track');
+    const cards = Array.from(track?.children || []);
+    const dotsContainer = root.querySelector('[data-dots]');
+    const prevButton = root.querySelector('[data-prev]');
+    const nextButton = root.querySelector('[data-next]');
+    let pageIndex = 0;
+    let itemsPerPage = 1;
+    let pageCount = 1;
+
+    const getItemsPerPage = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) return 3;
+      if (width >= 768) return 2;
+      return 1;
+    };
+
+    const renderDots = () => {
+      if (!dotsContainer) return;
+      dotsContainer.innerHTML = '';
+      for (let index = 0; index < pageCount; index += 1) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'p-dot h-2.5 w-2.5 rounded-full bg-slate-300';
+        button.setAttribute('aria-label', `Partner page ${index + 1}`);
+        button.addEventListener('click', () => {
+          pageIndex = index;
+          render();
+        });
+        dotsContainer.appendChild(button);
+      }
+    };
+
+    const render = () => {
+      if (!track) return;
+      track.style.transform = `translateX(-${pageIndex * 100}%)`;
+      const dots = Array.from(root.querySelectorAll('.p-dot'));
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === pageIndex);
+      });
+      prevButton?.toggleAttribute('disabled', pageIndex === 0);
+      nextButton?.toggleAttribute('disabled', pageIndex >= pageCount - 1);
+      prevButton?.classList.toggle('opacity-40', pageIndex === 0);
+      nextButton?.classList.toggle('opacity-40', pageIndex >= pageCount - 1);
+    };
+
+    const recalc = () => {
+      itemsPerPage = getItemsPerPage();
+      pageCount = Math.max(1, Math.ceil(cards.length / itemsPerPage));
+      pageIndex = Math.min(pageIndex, pageCount - 1);
+      renderDots();
+      render();
+    };
+
+    prevButton?.addEventListener('click', () => {
+      if (pageIndex > 0) {
+        pageIndex -= 1;
+        render();
+      }
+    });
+
+    nextButton?.addEventListener('click', () => {
+      if (pageIndex < pageCount - 1) {
+        pageIndex += 1;
+        render();
+      }
+    });
+
+    window.addEventListener('resize', recalc);
+    recalc();
+  }
 </script>

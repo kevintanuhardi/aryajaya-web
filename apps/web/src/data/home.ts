@@ -1,54 +1,57 @@
 export const heroSlides = [
   {
-    title: 'Solusi Ortopedi Terintegrasi',
-    subtitle: 'Distribusi alat kesehatan tulang belakang dan trauma dengan dukungan klinis end-to-end.',
-    image:
-      'https://images.unsplash.com/photo-1582719478171-2f2df6d6f9b5?auto=format&fit=crop&w=1600&q=80'
+    title: 'Solusi Ortopedi dan Spine Terintegrasi',
+    subtitle: 'Portofolio produk untuk trauma, spine, hip, knee, dan subspecialty ortopedi lainnya.',
+    image: '/images/client/products/arthroplasty/mobio-total-knee.png'
   },
   {
-    title: 'Navigasi Bedah Presisi',
-    subtitle: 'Perangkat guidance untuk akurasi prosedur di ruang operasi modern.',
-    image:
-      'https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?auto=format&fit=crop&w=1600&q=80'
+    title: 'Navigasi Bedah Ortopedi',
+    subtitle: 'Sistem navigasi berbasis pencitraan 2D dan 3D dengan panduan real-time selama prosedur.',
+    image: '/images/client/products/navigation/navi-or.png'
   },
   {
-    title: 'Layanan Respons Cepat',
-    subtitle: 'Tim siap mendukung kebutuhan rumah sakit nasional dengan respons &lt; 24 jam.',
-    image:
-      'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1600&q=80'
+    title: 'Dukungan untuk Rumah Sakit di Indonesia',
+    subtitle: 'Bekerja sama dengan produsen internasional terpercaya untuk mendukung kebutuhan klinis nasional.',
+    image: '/images/client/products/spine/lumbar-polyaxial-screw.png'
   }
 ];
 
 export const featuredServices = [
   {
-    title: 'Trauma & Recon',
-    description: 'Sistem plating, screw, dan instrumen untuk trauma ortopedi.',
+    title: 'Trauma & Reconstruction',
+    description:
+      'Comprehensive plating systems, screws, and surgical instruments designed for orthopedic trauma and reconstructive procedures.',
     icon: '🦴'
   },
   {
     title: 'Spine Solutions',
-    description: 'Implan tulang belakang dan navigasi minim invasif.',
+    description: 'Advanced spinal implant systems with minimally invasive surgical navigation technology.',
     icon: '🧠'
   },
   {
     title: 'Surgical Navigation',
-    description: 'Konsol guidance dengan integrasi imaging untuk presisi operasi.',
+    description: 'Integrated guidance consoles with real-time imaging support to enhance surgical precision and outcomes.',
     icon: '🛰️'
   }
 ];
 
 export const partners = [
-  { name: 'Medtronic', subtitle: 'Spine & Navigation', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=60' },
-  { name: 'DePuy Synthes', subtitle: 'Trauma', image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=60' },
-  { name: 'Brainlab', subtitle: 'Navigation', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=60' },
-  { name: 'Stryker', subtitle: 'Ortho Systems', image: 'https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=600&q=60' }
+  { name: 'BAUI BIOTECH CO., LTD', subtitle: 'Spine solutions', image: '/images/client/logos/baui.png' },
+  { name: 'B-ONE MEDICAL (BEIJING), CO., LTD.', subtitle: 'Hip & knee arthroplasty', image: '/images/client/logos/b-one.png' },
+  { name: 'by ONE', subtitle: 'Medical technology partner', image: '/images/client/logos/by-one.png' },
+  { name: 'Traufix', subtitle: 'Orthopedic product partner', image: '/images/client/logos/traufix.png' },
+  { name: 'Visual MedTech', subtitle: 'Surgical navigation', image: '/images/client/logos/visual-medtech.png' },
+  { name: 'IMEDICOM CO., LTD.', subtitle: 'Kyphoplasty & bone cement', image: '/images/client/logos/imedicom.jpg' }
 ];
 
 export const visionMission = {
-  vision: 'Menjadi mitra distribusi alat kesehatan ortopedi yang paling responsif dan terpercaya di Indonesia.',
+  vision:
+    'To become a trusted and leading medical device company, delivering innovative and high-quality healthcare solutions that improve patient outcomes and support medical professionals across Indonesia.',
   mission: [
-    'Menyediakan portofolio produk yang aman dan sesuai regulasi.',
-    'Memberikan edukasi produk dan dukungan klinis ke rumah sakit mitra.',
-    'Memastikan proses supply chain cepat dengan pelayanan nasional.'
+    'To provide reliable, safe, and advanced medical equipment that meets international quality standards.',
+    'To support healthcare professionals with innovative technology and comprehensive product solutions.',
+    'To build long-term partnerships based on integrity, professionalism, and excellence.',
+    'To continuously improve our services through innovation, training, and customer-focused support.',
+    'To contribute to the advancement of healthcare services nationwide.'
   ]
 };

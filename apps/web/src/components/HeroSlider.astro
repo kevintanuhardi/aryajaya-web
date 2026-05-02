@@ -2,22 +2,26 @@
 import type { heroSlides } from '../data/home';
 
 const { slides } = Astro.props as { slides: typeof heroSlides };
-const placeholderImage =
-  'https://images.unsplash.com/photo-1503389152951-9f343605f61e?auto=format&fit=crop&w=1600&q=80';
+const fallbackImage = '/images/client/products/navigation/navi-or.png';
+const sliderId = `hero-slider-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<section class="relative isolate overflow-hidden bg-slate-900 text-white">
+<section class="relative isolate overflow-hidden bg-slate-950 text-white" data-hero-slider={sliderId}>
   <div class="relative h-[520px] w-full overflow-hidden">
-    <div class="slider-track flex h-full w-full snap-x snap-mandatory overflow-x-auto scroll-smooth" aria-label="Hero slides">
+    <div class="slider-track flex h-full w-full transition-transform duration-500 ease-out" aria-label="Hero slides">
       {slides.map((slide, idx) => (
-        <div class="relative h-full w-full flex-shrink-0 snap-center" style="min-width: 100%" data-index={idx}>
+        <div
+          class="relative h-full w-full flex-shrink-0 bg-[radial-gradient(circle_at_72%_45%,rgba(13,124,102,0.38),transparent_34%),linear-gradient(135deg,#052e2b_0%,#0f172a_52%,#020617_100%)]"
+          style="min-width: 100%"
+          data-index={idx}
+        >
           <img
-            src={slide.image || placeholderImage}
+            src={slide.image || fallbackImage}
             alt={slide.title}
-            class="absolute inset-0 h-full w-full object-cover"
+            class="absolute inset-0 h-full w-full object-contain p-12 opacity-35"
             loading="lazy"
-            onerror={`this.onerror=null;this.src='${placeholderImage}';`}
+            onerror={`this.onerror=null;this.src='${fallbackImage}';`}
           />
-          <div class="absolute inset-0 bg-slate-900/50" />
+          <div class="absolute inset-0 bg-slate-950/45" />
           <div class="relative z-10 flex h-full items-center justify-center px-6 text-center">
             <div class="max-w-3xl space-y-4">
               <p class="text-sm uppercase tracking-[0.2em] text-emerald-200">Arjaya Langgeng Medika</p>
@@ -28,18 +32,22 @@ const placeholderImage =
         </div>
       ))}
     </div>
-    <button class="nav-btn left-3" aria-label="Slide sebelumnya">‹</button>
-    <button class="nav-btn right-3" aria-label="Slide berikutnya">›</button>
+    <button class="nav-btn left-3" type="button" data-prev aria-label="Slide sebelumnya">‹</button>
+    <button class="nav-btn right-3" type="button" data-next aria-label="Slide berikutnya">›</button>
     <div class="dots absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2" aria-label="Slide indicators">
       {slides.map((_, idx) => (
-        <button class="dot h-3 w-3 rounded-full bg-white/40" data-index={idx} aria-label={`Ke slide ${idx + 1}`}></button>
+        <button
+          class="dot h-3 w-3 rounded-full bg-white/40"
+          type="button"
+          data-dot={idx}
+          aria-label={`Ke slide ${idx + 1}`}
+        ></button>
       ))}
     </div>
   </div>
 </section>
 
 <style>
-  .slider-track::-webkit-scrollbar { display: none; }
   .nav-btn {
     position: absolute;
     top: 50%;
@@ -55,22 +63,36 @@ const placeholderImage =
   .dot.active { background: #fff; }
 </style>
 
-<script>
-  const track = document.querySelector('.slider-track');
-  const slidesEls = Array.from(track?.children || []);
-  const dots = Array.from(document.querySelectorAll('.dots .dot'));
-  let index = 0;
+<script define:vars={{ sliderId }}>
+  const root = document.querySelector(`[data-hero-slider="${sliderId}"]`);
+  if (root) {
+    const track = root.querySelector('.slider-track');
+    const slides = Array.from(root.querySelectorAll('[data-index]'));
+    const dots = Array.from(root.querySelectorAll('[data-dot]'));
+    const prevButton = root.querySelector('[data-prev]');
+    const nextButton = root.querySelector('[data-next]');
+    let index = 0;
 
-  const goTo = (i) => {
-    if (!track) return;
-    index = (i + slidesEls.length) % slidesEls.length;
-    const target = slidesEls[index];
-    track.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
-    dots.forEach((d, j) => d.classList.toggle('active', j === index));
-  };
+    const render = () => {
+      if (!track) return;
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((dot, dotIndex) => {
+        dot.classList.toggle('active', dotIndex === index);
+      });
+    };
 
-  document.querySelector('.nav-btn.left-3')?.addEventListener('click', () => goTo(index - 1));
-  document.querySelector('.nav-btn.right-3')?.addEventListener('click', () => goTo(index + 1));
-  dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
-  goTo(0);
+    const goTo = (nextIndex) => {
+      if (slides.length === 0) return;
+      index = (nextIndex + slides.length) % slides.length;
+      render();
+    };
+
+    prevButton?.addEventListener('click', () => goTo(index - 1));
+    nextButton?.addEventListener('click', () => goTo(index + 1));
+    dots.forEach((dot, dotIndex) => {
+      dot.addEventListener('click', () => goTo(dotIndex));
+    });
+
+    render();
+  }
 </script>

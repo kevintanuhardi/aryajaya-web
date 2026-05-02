@@ -10,10 +10,10 @@ Monorepo that houses the Astro marketing site (`apps/web`) and Sanity Studio (`a
 │   ├── web                   # Astro + Tailwind company profile site
 │   │   ├── src
 │   │   │   ├── components    # Hero, CTA, product cards, etc.
-│   │   │   ├── data          # Sample catalog, site settings, licenses
+│   │   │   ├── data          # Client-backed catalog, site settings, licenses
 │   │   │   ├── layouts       # Base layout w/ disclaimer + header/footer
 │   │   │   └── pages         # Home, Products, Product Detail, About, Contact
-│   │   └── public            # Placeholder imagery for sample products
+│   │   └── public            # Public imagery, logos, and product brochures
 │   └── studio                # Sanity Studio v3 configuration
 │       ├── schemas           # siteSettings, licenses, productCategory, product
 │       └── seed              # sample-data.ndjson for quick dataset seeding
@@ -43,7 +43,7 @@ These values are also referenced in `sanity.cli.ts`/`sanity.config.ts` so CLI an
 cd apps/studio
 sanity dataset import seed/sample-data.ndjson [dataset]
 ```
-The provided NDJSON seeds singleton `siteSettings`, placeholder licenses, categories, and sample orthopedic/spine/navigation product records that mirror the Astro sample data. Each entry is clearly marked as `sampleData: true` so you can replace them later.
+The provided NDJSON seeds singleton `siteSettings`, placeholder licenses, categories, and initial orthopedic/spine/navigation product records. Update this seed before importing if Sanity will become the source of truth.
 
 ## Deployment Notes
 ### Astro site (apps/web)
@@ -56,6 +56,6 @@ The provided NDJSON seeds singleton `siteSettings`, placeholder licenses, catego
 
 ## TODO / Next Steps
 - Connect Astro components to live Sanity content via GROQ queries once the dataset is ready.
-- Replace SVG placeholders in `apps/web/public/images/products` with real product photography.
+- Add verified license, IPAK, ISO, and regulatory documents once available.
 - Expand Sanity schemas with localization, spec tables, or regulatory uploads as needed.
 - Add analytics / consent tooling prior to production launch.

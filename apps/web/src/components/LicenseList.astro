@@ -5,17 +5,27 @@ import { licenses } from '../data/licenses';
   <div class="mx-auto max-w-6xl px-4 py-16">
     <div class="mb-10 max-w-2xl">
       <p class="text-sm font-semibold uppercase tracking-wide text-amber-300">Licenses & Compliance</p>
-      <h2 class="text-3xl font-semibold">Komitmen regulasi yang sedang kami perbarui</h2>
+      <h2 class="text-3xl font-semibold">Registrasi kepatuhan perusahaan</h2>
       <p class="mt-4 text-slate-300">
-        Informasi berikut adalah placeholder hingga dokumen resmi selesai diverifikasi. Hubungi kami untuk update terbaru.
+        Nomor registrasi ditampilkan untuk referensi. Dokumen sertifikat lengkap tidak dipublikasikan di website.
       </p>
     </div>
-    <div class="grid gap-6 md:grid-cols-3">
+    <div class="grid gap-6 md:grid-cols-2">
       {licenses.map((license) => (
-        <article class="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h3 class="text-lg font-semibold">{license.title}</h3>
+        <article class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/10">
+          <div class="mb-4 flex items-center gap-4">
+            <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-300/30 bg-emerald-400/10">
+              <div class="h-8 w-8 rounded-full border-2 border-emerald-300/70"></div>
+            </div>
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-200">{license.label}</p>
+              <h3 class="text-lg font-semibold">{license.title}</h3>
+            </div>
+          </div>
+          <p class="rounded-xl border border-white/10 bg-slate-950/40 px-4 py-3 font-mono text-sm text-amber-200">
+            {license.registrationNumber}
+          </p>
           <p class="mt-2 text-sm text-slate-300">{license.description}</p>
-          <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-amber-300">Placeholder</p>
         </article>
       ))}
     </div>

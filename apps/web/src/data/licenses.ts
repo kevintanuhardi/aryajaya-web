@@ -1,17 +1,16 @@
 export const licenses = [
   {
-    title: 'Distribusi Alat Kesehatan Ortopedi',
+    title: 'CDAKB',
+    label: 'Registration Number',
+    registrationNumber: '231122018846600000001',
     description:
-      'Placeholder lisensi edar nasional untuk lini produk ortopedi Arjaya. Detail nomor akan diperbarui setelah verifikasi internal.'
+      'Cara Distribusi Alat Kesehatan yang Baik. Dokumen lengkap tidak ditampilkan di website.'
   },
   {
-    title: 'Sertifikasi Sistem Manajemen Mutu',
+    title: 'IDAK',
+    label: 'Registration Number',
+    registrationNumber: '231122018846600003',
     description:
-      'Rencana sertifikasi ISO 13485 untuk memastikan mutu layanan distribusi alat kesehatan. Informasi resmi menyusul.'
-  },
-  {
-    title: 'Izin Penyalur Alat Kesehatan (IPAK)',
-    description:
-      'Dokumen kepatuhan distribusi alat kesehatan yang sedang dalam proses pembaruan. Data lengkap akan diumumkan setelah final.'
+      'Izin Distribusi Alat Kesehatan. Dokumen lengkap tidak ditampilkan di website.'
   }
 ];

@@ -6,18 +6,23 @@ export type ProductCategory = {
 
 export const productCategories: ProductCategory[] = [
   {
-    id: 'spine',
-    name: 'Spine Solutions',
-    description: 'Implan dan instrumen untuk prosedur tulang belakang minimal invasif.'
+    id: 'trauma',
+    name: 'Trauma & Reconstruction',
+    description: 'Plate, screw, dan sistem fiksasi untuk trauma ortopedi dan rekonstruksi.'
   },
   {
-    id: 'orthopedic',
-    name: 'Orthopedic Trauma',
-    description: 'Sistem fiksasi tulang untuk trauma ekstremitas dan rekonstruksi sendi.'
+    id: 'spine',
+    name: 'Spine Solutions',
+    description: 'Implan, instrumen, dan sistem pendukung untuk prosedur tulang belakang.'
+  },
+  {
+    id: 'arthroplasty',
+    name: 'Arthroplasty',
+    description: 'Sistem hip dan knee replacement untuk prosedur rekonstruksi sendi.'
   },
   {
     id: 'navigation',
-    name: 'Navigation & Robotics',
-    description: 'Perangkat pandu navigasi ruang operasi untuk presisi pembedahan.'
+    name: 'Surgical Navigation',
+    description: 'Perangkat navigasi ruang operasi berbasis pencitraan 2D dan 3D.'
   }
 ];

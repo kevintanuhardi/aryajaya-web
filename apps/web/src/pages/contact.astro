@@ -23,10 +23,12 @@ import { siteSettings } from '../data/siteSettings';
               <WhatsappButton />
             </div>
           </div>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Email</p>
-            <a class="text-brand" href={`mailto:${siteSettings.email}`}>{siteSettings.email}</a>
-          </div>
+          {siteSettings.email && (
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Email</p>
+              <a class="text-brand" href={`mailto:${siteSettings.email}`}>{siteSettings.email}</a>
+            </div>
+          )}
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Maps</p>
             <a href={siteSettings.mapUrl} target="_blank" rel="noreferrer" class="text-brand">Buka di Google Maps</a>
