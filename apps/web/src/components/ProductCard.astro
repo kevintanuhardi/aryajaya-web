@@ -10,15 +10,20 @@ const { product, compact = false } = Astro.props as {
 
 const category = getCategory(product.categoryId);
 ---
-<article class="flex flex-col overflow-hidden rounded-xl bg-white shadow">
+<a
+  href={`/products/${product.slug}`}
+  class="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
+  aria-label={`View details for ${product.name}`}
+>
+  <article class="flex h-full flex-col">
   <div class="space-y-2 bg-slate-900 px-4 py-4 text-white">
     <div class="text-xs font-semibold uppercase tracking-wide text-emerald-200">
       {category?.name}
     </div>
     <h3 class="text-lg font-semibold leading-tight">
-      <a href={`/products/${product.slug}`} class="hover:underline">
+      <span class="group-hover:underline">
         {product.name}
-      </a>
+      </span>
     </h3>
     <p class="text-sm text-slate-200 line-clamp-2">{product.shortDescription}</p>
   </div>
@@ -38,4 +43,5 @@ const category = getCategory(product.categoryId);
       </div>
     </div>
   )}
-</article>
+  </article>
+</a>
