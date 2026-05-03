@@ -4,13 +4,13 @@ export const licenses = [
     label: 'Registration Number',
     registrationNumber: '231122018846600000001',
     description:
-      'Cara Distribusi Alat Kesehatan yang Baik. Dokumen lengkap tidak ditampilkan di website.'
+      'Good Medical Device Distribution Practices. The full certificate document is not displayed on the website.'
   },
   {
     title: 'IDAK',
     label: 'Registration Number',
     registrationNumber: '231122018846600003',
     description:
-      'Izin Distribusi Alat Kesehatan. Dokumen lengkap tidak ditampilkan di website.'
+      'Medical Device Distribution License. The full certificate document is not displayed on the website.'
   }
 ];

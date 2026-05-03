@@ -29,7 +29,7 @@ const category = getCategory(product.categoryId);
   <article class="bg-white">
     <div class="mx-auto max-w-5xl px-4 py-16">
       <nav class="text-sm text-slate-500">
-        <a href="/products" class="hover:text-brand">← Kembali ke produk</a>
+        <a href="/products" class="hover:text-brand">← Back to products</a>
       </nav>
       <div class="mt-6 grid gap-10 md:grid-cols-2">
         {product.heroImage ? (
@@ -42,7 +42,7 @@ const category = getCategory(product.categoryId);
             <div class="space-y-4">
               <div class="h-16 w-16 rounded-[1.5rem] border border-brand/20 bg-brand/10"></div>
               <h2 class="max-w-md text-3xl font-semibold leading-tight text-slate-900">{product.name}</h2>
-              <p class="max-w-lg text-sm leading-6 text-slate-600">Visual produk akan diperbarui setelah aset gambar final tersedia.</p>
+              <p class="max-w-lg text-sm leading-6 text-slate-600">The product visual will be updated once the final image asset is available.</p>
             </div>
           </div>
         )}
@@ -52,7 +52,7 @@ const category = getCategory(product.categoryId);
           <p class="text-slate-600">{product.shortDescription}</p>
           <p class="text-sm leading-6 text-slate-600">{product.body}</p>
           <div class="space-y-2">
-            <p class="text-sm font-semibold text-slate-500">Sorotan</p>
+            <p class="text-sm font-semibold text-slate-500">Highlights</p>
             <ul class="list-disc space-y-1 pl-5 text-sm text-slate-600">
               {product.highlights.map((item) => (
                 <li>{item}</li>
@@ -60,11 +60,11 @@ const category = getCategory(product.categoryId);
             </ul>
           </div>
           <div class="rounded-2xl bg-slate-50 p-4 text-xs">
-            <p class="font-semibold text-slate-500">Informasi produk</p>
+            <p class="font-semibold text-slate-500">Product information</p>
             <p class="text-slate-600">{product.manufacturer}</p>
             {product.source && (
               <a href={product.source} class="text-brand" target="_blank" rel="noreferrer">
-                {product.sourceLabel ?? 'Buka dokumen produk'}
+                {product.sourceLabel ?? 'Open product document'}
               </a>
             )}
           </div>
@@ -72,7 +72,7 @@ const category = getCategory(product.categoryId);
         </div>
       </div>
       <section class="mt-12">
-        <h2 class="text-2xl font-semibold text-slate-900">Spesifikasi</h2>
+        <h2 class="text-2xl font-semibold text-slate-900">Specifications</h2>
         <dl class="mt-4 grid gap-4 sm:grid-cols-2">
           {Object.entries(product.specifications).map(([key, value]) => (
             <div class="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">

@@ -9,20 +9,20 @@ const filteredProducts = categoryFilter === 'all'
   ? products
   : products.filter((product) => product.categoryId === categoryFilter);
 ---
-<BaseLayout title="Produk Arjaya" description="Katalog alat kesehatan trauma, spine, arthroplasty, dan navigasi">
+<BaseLayout title="Arjaya Products" description="Catalog of trauma, spine, arthroplasty, and navigation medical devices">
   <section class="bg-white">
     <div class="mx-auto max-w-6xl px-4 py-16">
       <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-wide text-brand">Katalog</p>
-          <h1 class="text-4xl font-semibold text-slate-900">Produk Trauma, Spine & Arthroplasty</h1>
-          <p class="mt-2 text-sm text-slate-600">Portofolio produk Arjaya Langgeng Medika berdasarkan katalog dan materi produk yang tersedia.</p>
+          <p class="text-sm font-semibold uppercase tracking-wide text-brand">Catalog</p>
+          <h1 class="text-4xl font-semibold text-slate-900">Trauma, Spine & Arthroplasty Products</h1>
+          <p class="mt-2 text-sm text-slate-600">Arjaya Langgeng Medika's product portfolio based on the available catalog and product materials.</p>
         </div>
         <form class="flex gap-3 text-sm" method="get">
           <label class="flex flex-col gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Filter kategori
+            Filter category
             <select name="category" class="rounded-xl border border-slate-200 px-4 py-2 text-sm" onchange="this.form.submit()">
-              <option value="all" selected={categoryFilter === 'all' ? true : undefined}>Semua kategori</option>
+              <option value="all" selected={categoryFilter === 'all' ? true : undefined}>All categories</option>
               {productCategories.map((category) => (
                 <option value={category.id} selected={categoryFilter === category.id ? true : undefined}>
                   {category.name}
@@ -39,7 +39,7 @@ const filteredProducts = categoryFilter === 'all'
       </div>
       {filteredProducts.length === 0 && (
         <p class="mt-10 rounded-2xl bg-slate-50 px-4 py-6 text-center text-sm text-slate-600">
-          Tidak ada produk dalam kategori ini untuk sementara.
+          There are currently no products in this category.
         </p>
       )}
     </div>

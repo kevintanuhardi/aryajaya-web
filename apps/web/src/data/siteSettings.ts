@@ -1,7 +1,7 @@
 export const siteSettings = {
   name: 'Arjaya Langgeng Medika',
   logo: '/images/client/logos/arjaya.png',
-  tagline: 'Solusi alat kesehatan ortopedi, tulang belakang, dan navigasi',
+  tagline: 'Orthopedic, spine, and navigation medical device solutions',
   whatsapp: '+62 821-1458-2810',
   whatsappLink: 'https://wa.me/6282114582810',
   address:
@@ -10,5 +10,5 @@ export const siteSettings = {
   email: '',
   socials: [{ label: 'Instagram', url: 'https://www.instagram.com/arjayalanggengmedika/' }],
   disclaimer:
-    'Informasi di website ini bersifat edukatif dan bukan pengganti konsultasi dokter. Penggunaan alat kesehatan mengikuti indikasi dan petunjuk penggunaan resmi.'
+    "The information on this website is for educational purposes and is not a substitute for a doctor's consultation. Medical devices should be used according to their official indications and instructions for use."
 };

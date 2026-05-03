@@ -14,16 +14,16 @@ import { siteSettings } from '../data/siteSettings';
       </p>
     </div>
     <div class="space-y-2 text-sm">
-      <p class="font-semibold text-white">Kontak</p>
+      <p class="font-semibold text-white">Contact</p>
       <p>{siteSettings.address}</p>
       <a class="text-brand block" href={siteSettings.mapUrl} target="_blank" rel="noreferrer">
-        Lihat lokasi di Google Maps
+        View location on Google Maps
       </a>
       <p>WhatsApp: {siteSettings.whatsapp}</p>
     </div>
     {siteSettings.socials.length > 0 && (
       <div class="space-y-2 text-sm">
-        <p class="font-semibold text-white">Ikuti Kami</p>
+        <p class="font-semibold text-white">Follow Us</p>
         <ul class="space-y-1">
           {siteSettings.socials.map((social) => (
             <li>
@@ -37,6 +37,6 @@ import { siteSettings } from '../data/siteSettings';
     )}
   </div>
   <div class="border-t border-slate-800 px-4 py-4 text-center text-xs text-slate-400">
-    © {new Date().getFullYear()} {siteSettings.name}. Hak cipta dilindungi.
+    © {new Date().getFullYear()} {siteSettings.name}. All rights reserved.
   </div>
 </footer>

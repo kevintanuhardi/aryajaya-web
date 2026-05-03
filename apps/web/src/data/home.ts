@@ -1,17 +1,17 @@
 export const heroSlides = [
   {
-    title: 'Solusi Ortopedi dan Spine Terintegrasi',
-    subtitle: 'Portofolio produk untuk trauma, spine, hip, knee, dan subspecialty ortopedi lainnya.',
+    title: 'Integrated Orthopedic and Spine Solutions',
+    subtitle: 'A product portfolio for trauma, spine, hip, knee, and other orthopedic subspecialties.',
     image: '/images/client/products/arthroplasty/mobio-total-knee.png'
   },
   {
-    title: 'Navigasi Bedah Ortopedi',
-    subtitle: 'Sistem navigasi berbasis pencitraan 2D dan 3D dengan panduan real-time selama prosedur.',
+    title: 'Orthopedic Surgical Navigation',
+    subtitle: 'A 2D and 3D image-based navigation system with real-time guidance during procedures.',
     image: '/images/client/products/navigation/navi-or.png'
   },
   {
-    title: 'Dukungan untuk Rumah Sakit di Indonesia',
-    subtitle: 'Bekerja sama dengan produsen internasional terpercaya untuk mendukung kebutuhan klinis nasional.',
+    title: 'Support for Hospitals Across Indonesia',
+    subtitle: 'Working with trusted international manufacturers to support clinical needs nationwide.',
     image: '/images/client/products/spine/lumbar-polyaxial-screw.png'
   }
 ];
