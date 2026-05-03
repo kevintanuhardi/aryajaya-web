@@ -5,7 +5,7 @@ export const siteSettings = {
   whatsapp: '+62 821-1458-2810',
   whatsappLink: 'https://wa.me/6282114582810',
   address:
-    'Graha Simatupang, Jl. TB Simatupang No.38 Tower 2C, RT.1/RW.8, Jati Padang, Ps. Minggu, Kota Jakarta Selatan, DKI Jakarta 12540',
+    'Graha Simatupang, Jl. TB Simatupang kav.38 Tower 2C, RT.1/RW.8, Jati Padang, Ps. Minggu, Kota Jakarta Selatan, DKI Jakarta 12540',
   mapUrl: 'https://share.google/5IKGNDSyz0qSzdrDZ',
   email: '',
   socials: [{ label: 'Instagram', url: 'https://www.instagram.com/arjayalanggengmedika/' }],
