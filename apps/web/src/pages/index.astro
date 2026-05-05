@@ -5,8 +5,10 @@ import FeaturedServices from '../components/FeaturedServices.astro';
 import PartnersCarousel from '../components/PartnersCarousel.astro';
 import VisionMission from '../components/VisionMission.astro';
 import LicenseList from '../components/LicenseList.astro';
+import ECatalogSection from '../components/ECatalogSection.astro';
 import InquiryBanner from '../components/InquiryBanner.astro';
 import { heroSlides, featuredServices, partners, visionMission } from '../data/home';
+import { getEcatalogProducts } from '../data/products';
 ---
 <BaseLayout title="Arjaya Langgeng Medika" description="Orthopedic, spine, and navigation medical device solutions" structuredData={{
   '@context': 'https://schema.org',
@@ -20,5 +22,13 @@ import { heroSlides, featuredServices, partners, visionMission } from '../data/h
   <PartnersCarousel items={partners} />
   <VisionMission content={visionMission} />
   <LicenseList />
+  <ECatalogSection
+    items={getEcatalogProducts()}
+    heading="Selected E-Catalogue Products"
+    description="Browse selected products with active official INAPROC e-catalogue listings, then continue to the product detail pages for specifications and brochures."
+    limit={6}
+    ctaHref="/products/e-catalogue"
+    ctaLabel="View all e-catalogue entries"
+  />
   <InquiryBanner />
 </BaseLayout>

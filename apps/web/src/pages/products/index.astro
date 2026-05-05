@@ -2,12 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { productCategories } from '../../data/categories';
-import { products } from '../../data/products';
-
-const categoryFilter = Astro.url.searchParams.get('category') ?? 'all';
-const filteredProducts = categoryFilter === 'all'
-  ? products
-  : products.filter((product) => product.categoryId === categoryFilter);
+import { getEcatalogProducts, products } from '../../data/products';
 ---
 <BaseLayout title="Arjaya Products" description="Catalog of trauma, spine, arthroplasty, and navigation medical devices">
   <section class="bg-white">
@@ -18,30 +13,88 @@ const filteredProducts = categoryFilter === 'all'
           <h1 class="text-4xl font-semibold text-slate-900">Trauma, Spine & Arthroplasty Products</h1>
           <p class="mt-2 text-sm text-slate-600">Arjaya Langgeng Medika's product portfolio based on the available catalog and product materials.</p>
         </div>
-        <form class="flex gap-3 text-sm" method="get">
-          <label class="flex flex-col gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-            Filter category
-            <select name="category" class="rounded-xl border border-slate-200 px-4 py-2 text-sm" onchange="this.form.submit()">
-              <option value="all" selected={categoryFilter === 'all' ? true : undefined}>All categories</option>
-              {productCategories.map((category) => (
-                <option value={category.id} selected={categoryFilter === category.id ? true : undefined}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </label>
-        </form>
       </div>
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {filteredProducts.map((product) => (
-          <ProductCard product={product} />
+      <div class="mb-8 flex flex-wrap gap-3">
+        <a
+          href="/products"
+          data-filter-link
+          data-category="all"
+          class="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+        >
+          All categories
+        </a>
+        {productCategories.map((category) => (
+          <a
+            href={`/products?category=${category.id}`}
+            data-filter-link
+            data-category={category.id}
+            class="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+          >
+            {category.name}
+          </a>
         ))}
       </div>
-      {filteredProducts.length === 0 && (
-        <p class="mt-10 rounded-2xl bg-slate-50 px-4 py-6 text-center text-sm text-slate-600">
-          There are currently no products in this category.
-        </p>
+      {getEcatalogProducts().length > 0 && (
+        <div class="mb-10 rounded-3xl border border-brand/10 bg-slate-50 p-6 md:flex md:items-center md:justify-between">
+          <div class="max-w-2xl">
+            <p class="text-sm font-semibold uppercase tracking-wide text-brand">E-Catalogue</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900">Official e-catalogue entries now have a dedicated page</h2>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              Browse all products with active official e-catalogue listings in one place, without extending the main products page.
+            </p>
+          </div>
+          <a
+            href="/products/e-catalogue"
+            class="mt-5 inline-flex items-center rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-dark md:mt-0"
+          >
+            Open e-catalogue page
+          </a>
+        </div>
       )}
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-products-grid>
+        {products.map((product) => (
+          <div data-product-item data-category={product.categoryId}>
+            <ProductCard product={product} />
+          </div>
+        ))}
+      </div>
+      <p class="mt-10 hidden rounded-2xl bg-slate-50 px-4 py-6 text-center text-sm text-slate-600" data-empty-state>
+        There are currently no products in this category.
+      </p>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const links = Array.from(document.querySelectorAll('[data-filter-link]'));
+  const items = Array.from(document.querySelectorAll('[data-product-item]'));
+  const emptyState = document.querySelector('[data-empty-state]');
+
+  const activeClasses = ['bg-brand', 'text-white', 'border-brand'];
+  const inactiveClasses = ['border-slate-200', 'bg-white', 'text-slate-700'];
+
+  const applyFilter = () => {
+    const params = new URLSearchParams(window.location.search);
+    const currentCategory = params.get('category') ?? 'all';
+
+    let visibleCount = 0;
+    items.forEach((item) => {
+      const category = item.getAttribute('data-category') ?? '';
+      const visible = currentCategory === 'all' || category === currentCategory;
+      item.classList.toggle('hidden', !visible);
+      if (visible) visibleCount += 1;
+    });
+
+    links.forEach((link) => {
+      const linkCategory = link.getAttribute('data-category') ?? 'all';
+      const isActive = linkCategory === currentCategory;
+      link.classList.remove(...(isActive ? inactiveClasses : activeClasses));
+      link.classList.add(...(isActive ? activeClasses : inactiveClasses));
+    });
+
+    emptyState?.classList.toggle('hidden', visibleCount > 0);
+  };
+
+  applyFilter();
+  window.addEventListener('popstate', applyFilter);
+</script>

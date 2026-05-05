@@ -12,10 +12,66 @@ export type Product = {
   manufacturer: string;
   source?: string;
   sourceLabel?: string;
+  catalogUrl?: string;
   heroImage?: string;
 };
 
-export const products: Product[] = [
+const catalogUrls: Partial<Record<string, string>> = {
+  'juveno-femoral-stem-system':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/b-one-thr-cementless-long-stem',
+  'ofit-dual-taper-femoral-stem-system':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/b-one-bipolar-cementless',
+  'primo-acetabular-system':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/b-one-thr-cementless-long-stem',
+  'fugu-cementless-acetabular-cup-system':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/b-one-bipolar-cementless',
+  'mobio-total-knee-system':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/b-one-tkr-mobio-ps-knee',
+  'nova-mis-polyaxial-screw-non-fenestrated':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-nova-spinal-fixation-system',
+  'nova-mis-polyaxial-screw-fenestrated':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-nova-spinal-fixation-system-fenestrated',
+  'nova-pre-bent-rod':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-nova-spinal-fixation-system-pre-bent-rod-ukuran-d5-5mm-x-l110mm-d5-5mm-x-l190mm',
+  'reborn-essence-lumbar-polyaxial-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-lumbar-fixation-system-polyaxial-screw',
+  'reborn-essence-lumbar-polyaxial-long-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-lumbar-fixation-system-pedicle-long-screw-poly',
+  'reborn-essence-lumbar-monoaxial-pedicle-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-lumbar-fixation-system-monoaxial-screw',
+  'reborn-essence-lumbar-monoaxial-pedicle-long-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-lumbar-fixation-system-pedicle-long-screw-mono',
+  'reborn-essence-lumbar-cannulated-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-lumbar-fixation-system-cannulated-poly-screw-fenestrated',
+  'reborn-essence-smooth-rod-lumbar':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-lumbar-fixation-system-smooth-rod-ukuran-d5-5-mm-x-l480-mm',
+  'medinaut-plus-system-balloon-kyphoplasty':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/medinaut-plus-kyphoplasty-system-s',
+  'mvx-radiopaque-bone-cement':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/mvx-radioque-bone-cement',
+  'venus-cervical-intervertebral-cage':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-venus-cervical-intervertebal-cage',
+  't-lock-cervical-intervertebral-cage':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/baui-reborn-essence-t-lock-cervical-intervertebral-cage',
+  't-lock-self-tapping-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/baui-reborn-essence-t-lock-cervical-intervertebral-cage-self-tapping-screw-uk-3-5-x-8-4-0-x-18-mm',
+  't-lock-self-drilling-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/baui-reborn-essence-t-lock-cervical-intervertebral-cage-self-drilling-screw-uk-3-5-x-8-4-0-x-18-mm',
+  'reborn-essence-anterior-cervical-plate-system':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-anterior-cervical-plate-anterior-plate-ukuran-16x26-mm-16x38mm',
+  'reborn-essence-posterior-cervical-multi-axial-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-posterior-cervical-fixation-system-multi-axial-screw',
+  'reborn-essence-posterior-cervical-pedicle-long-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-posterior-cervical-fixation-system-pedicle-long-screw',
+  'reborn-essence-posterior-cervical-occipital-plate':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-posterior-cervical-fixation-system-occipital-plate',
+  'reborn-essence-posterior-cervical-fixation-screw':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-posterior-cervical-fixation-system-cervical-fixation-screw',
+  'reborn-essence-posterior-cervical-smooth-rod':
+    'https://katalog.inaproc.id/arjaya-langgeng-medika/reborn-essence-posterior-cervical-fixation-system-smooth-rod-ukuran-d3-5-mm-x-l100-mm'
+};
+
+const baseProducts: Product[] = [
   {
     slug: 'visual-orthopedic-surgical-navigation-device',
     name: 'Visual Orthopedic Surgical Navigation Device',
@@ -149,8 +205,8 @@ export const products: Product[] = [
     ],
     specifications: {
       Type: 'Total Knee Replacement (Primary TKA)',
-      'Femur Sizes': '15 ukuran, termasuk 5 narrow option',
-      'Tibia Sizes': '9 ukuran',
+      'Femur Sizes': '15 sizes, including 5 narrow options',
+      'Tibia Sizes': '9 sizes',
       Fixation: 'Cemented'
     },
     manufacturer: 'B-ONE MEDICAL (BEIJING), CO., LTD.',
@@ -246,6 +302,29 @@ export const products: Product[] = [
     heroImage: '/images/client/products/spine/lumbar-polyaxial-screw.png'
   },
   {
+    slug: 'reborn-essence-lumbar-polyaxial-long-screw',
+    name: 'ReBorn Essence Lumbar Polyaxial Long Screw',
+    categoryId: 'spine',
+    shortDescription:
+      'Extended polyaxial screw for posterior lumbar fixation with added reduction support.',
+    body:
+      'An extended variant of the polyaxial screw designed for additional reduction requirements and multi-level procedures.',
+    highlights: [
+      'Extended tulip for higher reduction requirements',
+      'Multi-axial flexibility',
+      'Washer design for more optimal load distribution',
+      'Dual-threaded for installation efficiency'
+    ],
+    specifications: {
+      Type: 'Polyaxial - Long',
+      Diameter: '4.5 mm, 5.5 mm, 6.5 mm',
+      Length: '30-50 mm',
+      Sterilization: 'Non-sterile'
+    },
+    manufacturer: 'BAUI BIOTECH CO., LTD',
+    heroImage: '/images/client/products/spine/lumbar-polyaxial-screw.png'
+  },
+  {
     slug: 'reborn-essence-lumbar-monoaxial-pedicle-screw',
     name: 'ReBorn Essence Lumbar Monoaxial Pedicle Screw',
     categoryId: 'spine',
@@ -262,6 +341,29 @@ export const products: Product[] = [
       Type: 'Monoaxial',
       Diameter: '5.5 mm, 6.5 mm',
       Length: '30-50 mm',
+      Sterilization: 'Non-sterile'
+    },
+    manufacturer: 'BAUI BIOTECH CO., LTD',
+    heroImage: '/images/client/products/spine/lumbar-monoaxial-screw.png'
+  },
+  {
+    slug: 'reborn-essence-lumbar-monoaxial-pedicle-long-screw',
+    name: 'ReBorn Essence Lumbar Monoaxial Pedicle Long Screw',
+    categoryId: 'spine',
+    shortDescription:
+      'Extended monoaxial pedicle screw for deeper fixation and added reduction in lumbar constructs.',
+    body:
+      'Extended variant of the monoaxial screw designed for deeper fixation needs or additional reduction in multi-level procedures.',
+    highlights: [
+      'Fixed head for stable alignment control',
+      'Extended shaft or tulip for additional reduction requirements',
+      'High stability in posterior constructs',
+      'Suitable for deformity cases or multi-level fixation'
+    ],
+    specifications: {
+      Type: 'Monoaxial - Long',
+      Diameter: '5.5 mm, 6.5 mm',
+      Length: '35-50 mm',
       Sterilization: 'Non-sterile'
     },
     manufacturer: 'BAUI BIOTECH CO., LTD',
@@ -493,7 +595,7 @@ export const products: Product[] = [
     body:
       'Anterior Cervical Plate is designed with a thin profile and a pre-contoured plate to support anterior cervical fixation procedures.',
     highlights: [
-      'Desain low profile 2 mm',
+      'Low-profile 2 mm design',
       'Pre-contoured plate that follows cervical anatomy',
       'Multiple length options for multi-level needs'
     ],
@@ -690,7 +792,7 @@ export const products: Product[] = [
     body:
       'Connection Block is used to connect two rods or extend the construct in multi-level or revision cases.',
     highlights: [
-      'Mendukung koneksi rod-to-rod',
+      'Supports rod-to-rod connections',
       'Increases construct rigidity and stability',
       'Enables flexible configurations in complex cases'
     ],
@@ -815,5 +917,13 @@ export const products: Product[] = [
   }
 ];
 
+export const products: Product[] = baseProducts.map((product) => ({
+  ...product,
+  ...(catalogUrls[product.slug] ? { catalogUrl: catalogUrls[product.slug] } : {})
+}));
+
 export const getCategory = (id: ProductCategory['id']) =>
   productCategories.find((category) => category.id === id);
+
+export const getEcatalogProducts = () =>
+  products.filter((product) => Boolean(product.catalogUrl));

@@ -63,12 +63,24 @@ const category = getCategory(product.categoryId);
             <p class="font-semibold text-slate-500">Product information</p>
             <p class="text-slate-600">{product.manufacturer}</p>
             {product.source && (
-              <a href={product.source} class="text-brand" target="_blank" rel="noreferrer">
+              <a href={product.source} class="mt-2 inline-flex text-brand" target="_blank" rel="noreferrer">
                 {product.sourceLabel ?? 'Open product document'}
               </a>
             )}
           </div>
-          <WhatsappButton size="md" />
+          <div class="flex flex-wrap gap-3">
+            <WhatsappButton size="md" />
+            {product.catalogUrl && (
+              <a
+                href={product.catalogUrl}
+                target="_blank"
+                rel="noreferrer"
+                class="inline-flex items-center rounded-full border border-slate-200 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+              >
+                Open e-catalogue
+              </a>
+            )}
+          </div>
         </div>
       </div>
       <section class="mt-12">

@@ -26,6 +26,9 @@ const category = getCategory(product.categoryId);
       </span>
     </h3>
     <p class="text-sm text-slate-200 line-clamp-2">{product.shortDescription}</p>
+    {product.catalogUrl && (
+      <p class="text-xs font-semibold uppercase tracking-wide text-amber-200">E-Catalogue Available</p>
+    )}
   </div>
   {product.heroImage ? (
     <img
