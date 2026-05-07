@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { events } from '../../data/events';
+import type { EventItem } from '../../data/events';
+import WhatsappButton from '../../components/WhatsappButton.astro';
+
+export async function getStaticPaths() {
+  return events.map((event) => ({
+    params: { slug: event.slug },
+    props: { event }
+  }));
+}
+
+const { event } = Astro.props as { event: EventItem };
+
+const createdAtLabel = new Date(event.createdAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+<BaseLayout
+  title={`${event.title} | Arjaya Events`}
+  description={event.excerpt}
+  structuredData={{
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: event.title,
+    startDate: event.eventDateStart,
+    description: event.excerpt,
+    image: [event.image]
+  }}
+>
+  <article class="bg-white">
+    <div class="mx-auto max-w-5xl px-4 py-16">
+      <nav class="text-sm text-slate-500">
+        <a href="/events" class="hover:text-brand">← Back to events</a>
+      </nav>
+      <div class="mt-6 grid gap-10 md:grid-cols-[1.2fr_0.8fr]">
+        <div class="space-y-6">
+          <p class="text-xs font-semibold uppercase tracking-wide text-brand">{event.eventDate}</p>
+          <h1 class="text-4xl font-semibold text-slate-900">{event.title}</h1>
+          <p class="text-sm leading-7 text-slate-600">{event.excerpt}</p>
+          <img src={event.image} alt={event.title} class="w-full rounded-3xl object-cover shadow-lg" />
+          <div class="space-y-5 text-sm leading-7 text-slate-700">
+            {event.body.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+        <aside class="space-y-5">
+          <div class="rounded-3xl border border-slate-100 bg-slate-50 p-6">
+            <p class="text-sm font-semibold text-slate-500">Event information</p>
+            <dl class="mt-4 space-y-4">
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Event date</dt>
+                <dd class="mt-1 text-sm text-slate-700">{event.eventDate}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Created at</dt>
+                <dd class="mt-1 text-sm text-slate-700">{createdAtLabel}</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <WhatsappButton size="md" />
+            <a
+              href={event.sourceUrl}
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center rounded-full border border-slate-200 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+            >
+              {event.sourceLabel}
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

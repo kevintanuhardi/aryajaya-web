@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventCard from '../../components/EventCard.astro';
+import { events } from '../../data/events';
+---
+<BaseLayout title="Arjaya Events" description="Training, launches, and workshop activities from Arjaya Langgeng Medika">
+  <section class="bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-16">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-wide text-brand">Events</p>
+        <h1 class="mt-2 text-4xl font-semibold text-slate-900">Training, launches, and field activities</h1>
+        <p class="mt-4 text-sm leading-6 text-slate-600">
+          A record of Arjaya Langgeng Medika events, workshops, and strategic activities with healthcare professionals and technology partners.
+        </p>
+      </div>
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        {events.map((event) => (
+          <EventCard event={event} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
