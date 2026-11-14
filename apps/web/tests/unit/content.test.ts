@@ -203,7 +203,7 @@ describe('content.ts with a full Sanity response', () => {
       logo: 'https://cdn.sanity.io/images/x/logo.png',
       tagline: 'CMS tagline',
       whatsapp: '+62 811-0000-0000',
-      whatsappLink: 'https://wa.me/628110000000',
+      whatsappLink: 'https://wa.me/6281100000000', // derived from whatsappNumber
       address: 'CMS address',
       mapUrl: 'https://maps.example.com',
       email: 'hello@example.com',
@@ -326,56 +326,52 @@ describe('content.ts with a full Sanity response', () => {
   });
 });
 
-describe('content.ts per-collection fallback', () => {
-  it('uses CMS products but local events, licenses and home content when those are empty', async () => {
+describe('content.ts once Sanity is in use (Site Settings exists)', () => {
+  it('treats empty CMS collections as empty instead of falling back to local items', async () => {
     const { content } = await loadWithCms({
-      settings: null,
-      home: { heroSlides: [], featuredServices: null, partners: [], vision: null, mission: [] },
-      categories: cmsCategories,
-      products: cmsProducts,
+      ...fullCms,
+      categories: [],
+      products: null,
       events: [],
       licenses: null
     });
 
-    expect(content.products.map((p) => p.slug)).toEqual(['cms-screw', 'cms-robot']);
-    expect(content.productCategories).toEqual(cmsCategories);
+    expect(content.cmsInUse).toBe(true);
+    expect(content.productCategories).toEqual([]);
+    expect(content.products).toEqual([]);
+    expect(content.events).toEqual([]);
+    expect(content.licenses).toEqual([]);
+    expect(content.getEcatalogProducts()).toEqual([]);
+  });
+
+  it('ignores CMS collections until Site Settings exists (dataset not seeded yet)', async () => {
+    const { content } = await loadWithCms({ ...fullCms, settings: null });
+
+    expect(content.cmsInUse).toBe(false);
+    expect(content.products).toEqual(localProducts);
+    expect(content.productCategories).toEqual(localCategories);
     expect(content.events).toEqual(localEvents);
     expect(content.licenses).toEqual(localLicenses);
+  });
+
+  it('still falls back for empty home page lists so the layout never breaks', async () => {
+    const { content } = await loadWithCms({
+      ...fullCms,
+      home: { heroSlides: [], featuredServices: null, partners: [], vision: '', mission: null }
+    });
     expect(content.heroSlides).toEqual(localHeroSlides);
     expect(content.featuredServices).toEqual(localServices);
     expect(content.partners).toEqual(localPartners);
     expect(content.visionMission).toEqual(localVisionMission);
-    expect(content.siteSettings).toEqual(localSiteSettings);
   });
 
-  it('uses CMS events but local products and categories when those are empty', async () => {
-    const { content } = await loadWithCms({ ...fullCms, categories: [], products: null });
-
-    expect(content.events.map((e) => e.slug)).toEqual(['cms-event-with-label', 'cms-event-no-label']);
-    expect(content.products).toEqual(localProducts);
-    expect(content.productCategories).toEqual(localCategories);
-    expect(content.getCategory('trauma')?.name).toBe('Trauma & Reconstruction');
-  });
-
-  it('falls back field by field for partial home content', async () => {
-    const { content } = await loadWithCms({
-      ...fullCms,
-      home: { heroSlides: fullCms.home.heroSlides, vision: '', mission: null }
-    });
-    expect(content.heroSlides).toEqual(fullCms.home.heroSlides);
-    expect(content.featuredServices).toEqual(localServices);
-    expect(content.partners).toEqual(localPartners);
-    expect(content.visionMission).toEqual(localVisionMission);
-  });
-
-  it('falls back field by field for partial site settings', async () => {
+  it('falls back field by field for partial site settings, including socials that were never set', async () => {
     const { content } = await loadWithCms({
       ...fullCms,
       settings: {
         name: 'Only the name',
         tagline: '',
         whatsappNumber: null,
-        whatsappLink: undefined,
         address: null,
         mapUrl: '',
         disclaimer: null,
@@ -383,13 +379,66 @@ describe('content.ts per-collection fallback', () => {
       }
     });
 
-    expect(content.siteSettings).toEqual({
-      ...localSiteSettings,
-      name: 'Only the name',
-      // Current behavior: email and socials do NOT fall back to local values
-      // (local email is '' so that is equivalent; socials become []).
-      email: '',
-      socials: []
+    expect(content.siteSettings).toEqual({ ...localSiteSettings, name: 'Only the name', email: '' });
+  });
+
+  it('respects socials that an editor deliberately emptied', async () => {
+    const { content } = await loadWithCms({ ...fullCms, settings: { ...fullCms.settings, socials: [] } });
+    expect(content.siteSettings.socials).toEqual([]);
+  });
+
+  it('derives the WhatsApp link from the number, ignoring any stored link', async () => {
+    const { content } = await loadWithCms({
+      ...fullCms,
+      settings: { ...fullCms.settings, whatsappNumber: '0812-3456-7890', whatsappLink: 'https://wa.me/000' }
     });
+    expect(content.siteSettings.whatsapp).toBe('0812-3456-7890');
+    expect(content.siteSettings.whatsappLink).toBe('https://wa.me/6281234567890');
+  });
+
+  it('never renders "Invalid Date" and trims blank date labels', async () => {
+    const { content } = await loadWithCms({
+      ...fullCms,
+      events: [
+        { ...cmsEvents[1], slug: 'blank-label', eventDate: '   ', eventDateStart: '2025-12-31' },
+        { ...cmsEvents[1], slug: 'no-start', eventDate: null, eventDateStart: null, publishedAt: '2026-02-03T08:00:00Z' },
+        { ...cmsEvents[1], slug: 'nothing', eventDate: null, eventDateStart: null, publishedAt: null }
+      ]
+    });
+    const bySlug = Object.fromEntries(content.events.map((event) => [event.slug, event]));
+    expect(bySlug['blank-label'].eventDate).toBe('December 31, 2025');
+    expect(bySlug['no-start'].eventDate).toBe('February 3, 2026');
+    expect(bySlug['no-start'].eventDateStart).toBe('2026-02-03');
+    expect(bySlug['nothing'].eventDate).toBe('');
+    expect(content.events.some((event) => event.eventDate.includes('Invalid'))).toBe(false);
+  });
+
+  it('keeps products whose category is missing, with no category, and warns', async () => {
+    const { content } = await loadWithCms({
+      ...fullCms,
+      products: [{ ...cmsProducts[1], slug: 'orphan', categoryId: null }]
+    });
+    expect(content.products[0].categoryId).toBe('');
+    expect(content.getCategory(content.products[0].categoryId)).toBeUndefined();
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('orphan'));
+  });
+});
+
+describe('helpers', () => {
+  it('toWhatsappLink handles international, local and formatted numbers', async () => {
+    stubSanityEnv();
+    const { toWhatsappLink } = await loadContent();
+    expect(toWhatsappLink('+62 821-1458-2810')).toBe('https://wa.me/6282114582810');
+    expect(toWhatsappLink('0821 1458 2810')).toBe('https://wa.me/6282114582810');
+    expect(toWhatsappLink('(+62) 821.1458.2810')).toBe('https://wa.me/6282114582810');
+  });
+
+  it('formatDate returns an empty string for missing or invalid dates', async () => {
+    stubSanityEnv();
+    const { formatDate } = await loadContent();
+    expect(formatDate('2025-08-15')).toBe('August 15, 2025');
+    expect(formatDate('2025-08-15T10:00:00Z')).toBe('August 15, 2025');
+    expect(formatDate('not-a-date')).toBe('');
+    expect(formatDate(null)).toBe('');
   });
 });

@@ -54,19 +54,18 @@ export default defineType({
     defineField({
       name: 'whatsappNumber',
       type: 'string',
-      title: 'WhatsApp number (display)',
-      description: 'Formatted for people to read, e.g. +62 821-1458-2810.',
+      title: 'WhatsApp number',
+      description:
+        'Shown on the site, e.g. +62 821-1458-2810. Every “Consult via WhatsApp” button links to this number automatically.',
       group: 'contact',
-      validation: (rule) => rule.required()
-    }),
-    defineField({
-      name: 'whatsappLink',
-      type: 'url',
-      title: 'WhatsApp link',
-      description: 'Used by every “Consult via WhatsApp” button, e.g. https://wa.me/6282114582810.',
-      initialValue: 'https://wa.me/6282114582810',
-      group: 'contact',
-      validation: (rule) => rule.required()
+      validation: (rule) =>
+        rule
+          .required()
+          .regex(/^\+?[\d\s().-]+$/, { name: 'phone number' })
+          .custom((value) => {
+            const digits = (value ?? '').replace(/\D/g, '');
+            return digits.length >= 9 && digits.length <= 15 ? true : 'Enter a full phone number (9–15 digits), e.g. +62 821-1458-2810.';
+          })
     }),
     defineField({
       name: 'whatsappButtonLabel',

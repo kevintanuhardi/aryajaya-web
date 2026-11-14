@@ -78,7 +78,6 @@ docs.push({
   tagline: siteSettings.tagline,
   logo: image(siteSettings.logo),
   whatsappNumber: siteSettings.whatsapp,
-  whatsappLink: siteSettings.whatsappLink,
   email: siteSettings.email || undefined,
   address: siteSettings.address,
   mapUrl: siteSettings.mapUrl,

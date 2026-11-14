@@ -67,7 +67,7 @@ npm run seed:import --workspace=@aryajaya/studio     # imports into the "product
 This copies everything the website shows today (including images and brochure PDFs) into Sanity. Re-running `seed:import` overwrites documents with the same IDs, so don’t re-run it after editors have made changes.
 
 ### How the website gets content
-`apps/web/src/lib/content.ts` queries Sanity once per build. For each collection it uses Sanity when there are published documents, otherwise the local files in `apps/web/src/data/`; page copy (headings, intros, labels, SEO) falls back field by field, so an empty field shows the text in `apps/web/src/data/pages.ts`, `home.ts` or `siteSettings.ts`. The site therefore builds before Sanity is seeded, and if Sanity is unreachable.
+`apps/web/src/lib/content.ts` queries Sanity once per build. Until Sanity is reachable **and seeded** (the Site Settings document exists), the site uses the local files in `apps/web/src/data/`, so it builds before seeding and when Sanity is down. After that, products, categories, events and licenses come only from Sanity, so unpublishing every item empties that section. Page copy (headings, intros, labels, SEO), home page lists and menu links still fall back field by field, so a blank field shows the text in `apps/web/src/data/pages.ts`, `home.ts` or `siteSettings.ts`. The WhatsApp button link is generated from the WhatsApp number.
 
 Set these on the website build (Vercel → Project → Environment Variables, or `apps/web/.env`):
 ```

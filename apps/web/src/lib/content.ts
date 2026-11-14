@@ -1,9 +1,17 @@
 /**
  * Single entry point for site content.
  *
- * Each collection comes from Sanity when it is configured and has published
- * documents. Otherwise the local files in src/data/ are used, so the site
- * always builds. Pages and components should import from here, not src/data/.
+ * Sanity is "in use" once it is configured, reachable and seeded (the Site
+ * Settings document exists). Until then everything comes from the local files
+ * in src/data/, so the site always builds.
+ *
+ * Once Sanity is in use:
+ * - Collections (products, categories, events, licenses) come only from Sanity,
+ *   so unpublishing every item really empties the section.
+ * - Single fields and page-structure lists (headings, hero slides, nav links…)
+ *   still fall back field by field, so a blank field never blanks the layout.
+ *
+ * Pages and components should import from here, not src/data/.
  */
 import { sanityFetch, toParagraphs } from './sanity';
 import { siteSettings as localSiteSettings } from '../data/siteSettings';
@@ -140,6 +148,21 @@ type CmsResult = {
 
 const cms = await sanityFetch<CmsResult>(query);
 
+/** True once Sanity is reachable and has been seeded; see the header comment. */
+export const cmsInUse = Boolean(cms?.settings);
+
+/** Collections: Sanity's list (even if empty) once Sanity is in use, otherwise the local list. */
+const collection = <T>(items: T[] | null | undefined, local: T[]): T[] => (cmsInUse ? (items ?? []) : local);
+
+/**
+ * WhatsApp click-to-chat link derived from the displayed number, so the two can never disagree.
+ * "+62 821-1458-2810" and "0821-1458-2810" both become https://wa.me/6282114582810.
+ */
+export const toWhatsappLink = (number: string): string => {
+  const digits = number.replace(/\D/g, '');
+  return `https://wa.me/${digits.startsWith('0') ? `62${digits.slice(1)}` : digits}`;
+};
+
 /* ---------- Site settings ---------- */
 
 const s = cms?.settings;
@@ -149,12 +172,15 @@ export const siteSettings: typeof localSiteSettings = s
       logo: pick(s.logo, localSiteSettings.logo),
       tagline: pick(s.tagline, localSiteSettings.tagline),
       whatsapp: pick(s.whatsappNumber, localSiteSettings.whatsapp),
-      whatsappLink: pick(s.whatsappLink, localSiteSettings.whatsappLink),
+      whatsappLink: toWhatsappLink(pick(s.whatsappNumber, localSiteSettings.whatsapp)),
       whatsappButtonLabel: pick(s.whatsappButtonLabel, localSiteSettings.whatsappButtonLabel),
       address: pick(s.address, localSiteSettings.address),
       mapUrl: pick(s.mapUrl, localSiteSettings.mapUrl),
       email: s.email ?? '',
-      socials: (s.socials ?? []).filter((link) => link?.label && link?.url),
+      // Never set → local defaults; set (even to an empty list) → exactly what the editor chose.
+      socials: Array.isArray(s.socials)
+        ? s.socials.filter((link) => link?.label && link?.url)
+        : localSiteSettings.socials,
       disclaimer: pick(s.disclaimer, localSiteSettings.disclaimer),
       navLinks: (() => {
         const links = (s.navLinks ?? []).filter((link) => link?.label && link?.href);
@@ -164,7 +190,7 @@ export const siteSettings: typeof localSiteSettings = s
       footerMapLinkLabel: pick(s.footerMapLinkLabel, localSiteSettings.footerMapLinkLabel),
       footerSocialHeading: pick(s.footerSocialHeading, localSiteSettings.footerSocialHeading)
     }
-  : localSiteSettings;
+  : { ...localSiteSettings, whatsappLink: toWhatsappLink(localSiteSettings.whatsapp) };
 
 /* ---------- Home page ---------- */
 
@@ -234,13 +260,18 @@ export const listingPages: typeof localListingPages = {
 
 /* ---------- Products ---------- */
 
-export const productCategories: ProductCategory[] = nonEmpty(cms?.categories) ? cms.categories : localCategories;
+export const productCategories: ProductCategory[] = collection(cms?.categories, localCategories);
 
-export const products: Product[] = nonEmpty(cms?.products)
-  ? cms.products.map((product) => ({
+const uncategorized = (cms?.products ?? []).filter((product) => !product.categoryId).map((product) => product.slug);
+if (cmsInUse && uncategorized.length > 0) {
+  console.warn(`[sanity] Products without a published category (shown without a category label): ${uncategorized.join(', ')}`);
+}
+
+export const products: Product[] = cmsInUse
+  ? (cms?.products ?? []).map((product) => ({
       slug: product.slug,
       name: product.name,
-      categoryId: product.categoryId,
+      categoryId: product.categoryId ?? '',
       shortDescription: product.shortDescription,
       body: toParagraphs(product.body).join('\n\n'),
       highlights: product.highlights ?? [],
@@ -253,34 +284,45 @@ export const products: Product[] = nonEmpty(cms?.products)
     }))
   : localProducts;
 
-export const getCategory = (id: ProductCategory['id']) => productCategories.find((category) => category.id === id);
+export const getCategory = (id: ProductCategory['id']) =>
+  id ? productCategories.find((category) => category.id === id) : undefined;
 
 export const getEcatalogProducts = () => products.filter((product) => Boolean(product.catalogUrl));
 
 /* ---------- Events ---------- */
 
-const formatDate = (isoDate: string) =>
-  new Date(`${isoDate}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+/** "2025-08-15" → "August 15, 2025"; anything unparseable → "". */
+export const formatDate = (isoDate: string | null | undefined): string => {
+  const day = isoDate?.slice(0, 10);
+  const date = day ? new Date(`${day}T00:00:00`) : null;
+  return date && !Number.isNaN(date.getTime())
+    ? date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+    : '';
+};
 
-export const events: EventItem[] = nonEmpty(cms?.events)
-  ? cms.events.map((event) => ({
-      slug: event.slug,
-      title: event.title,
-      createdAt: event.publishedAt,
-      eventDate: event.eventDate || formatDate(event.eventDateStart),
-      eventDateStart: event.eventDateStart,
-      excerpt: event.excerpt,
-      body: toParagraphs(event.body),
-      image: event.image ?? '',
-      sourceUrl: event.sourceUrl ?? '',
-      sourceLabel: event.sourceLabel ?? 'Open event folder'
-    }))
+export const events: EventItem[] = cmsInUse
+  ? (cms?.events ?? []).map((event) => {
+      // The start date is required in the dashboard; publishedAt is a last resort for old documents.
+      const start = event.eventDateStart || event.publishedAt?.slice(0, 10) || '';
+      return {
+        slug: event.slug,
+        title: event.title,
+        createdAt: event.publishedAt,
+        eventDate: event.eventDate?.trim() || formatDate(start),
+        eventDateStart: start,
+        excerpt: event.excerpt,
+        body: toParagraphs(event.body),
+        image: event.image ?? '',
+        sourceUrl: event.sourceUrl ?? '',
+        sourceLabel: event.sourceLabel ?? 'Open event folder'
+      };
+    })
   : localEvents;
 
 /* ---------- Licenses ---------- */
 
-export const licenses = nonEmpty(cms?.licenses)
-  ? cms.licenses.map((license) => ({
+export const licenses = cmsInUse
+  ? (cms?.licenses ?? []).map((license) => ({
       title: license.title,
       label: license.label ?? 'Registration Number',
       registrationNumber: license.registrationNumber ?? '',
