@@ -5,7 +5,7 @@ import { schemaTypes, singletonTypes } from './schemas';
 import { structure } from './src/deskStructure';
 import { arjayaTheme } from './src/theme';
 import { StudioLogo } from './src/StudioLogo';
-import { canEditType, isAdmin } from './src/access';
+import { canEditType, isOwner } from './src/access';
 
 // Only variables prefixed with SANITY_STUDIO_ are exposed to the Studio in the browser.
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID;
@@ -23,8 +23,8 @@ export default defineConfig({
   icon: StudioLogo,
   theme: arjayaTheme,
   plugins: [structureTool({ structure }), visionTool({ defaultApiVersion: '2024-01-01' })],
-  // The query tool (Vision) is for administrators only.
-  tools: (tools, { currentUser }) => (isAdmin(currentUser) ? tools : tools.filter((tool) => tool.name !== 'vision')),
+  // The query tool (Vision) is for owners only.
+  tools: (tools, { currentUser }) => (isOwner(currentUser) ? tools : tools.filter((tool) => tool.name !== 'vision')),
   schema: {
     types: schemaTypes,
     templates: (templates) => [

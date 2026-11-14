@@ -11,7 +11,7 @@ import {
   TagIcon,
   ThListIcon
 } from '@sanity/icons';
-import { isAdmin } from './access';
+import { isOwner } from './access';
 
 const singleton = (S: Parameters<StructureResolver>[0], type: string, id: string, title: string, icon: typeof HomeIcon) =>
   S.listItem()
@@ -64,9 +64,9 @@ const newsItem = (S: Builder) =>
         .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }])
     );
 
-/** Editors see only products and news; administrators also see pages, settings and licenses. */
+/** Editors see only products and news; owners (src/access.ts) also see pages, settings and licenses. */
 export const structure: StructureResolver = (S, context) => {
-  if (!isAdmin(context.currentUser)) {
+  if (!isOwner(context.currentUser)) {
     return S.list().title('Arjaya Content').items([productsItem(S), newsItem(S)]);
   }
 
@@ -77,7 +77,7 @@ export const structure: StructureResolver = (S, context) => {
       newsItem(S),
       S.divider(),
       S.listItem()
-        .title('Pages (admin)')
+        .title('Pages (owner)')
         .icon(DocumentsIcon)
         .child(
           S.list()
@@ -89,7 +89,7 @@ export const structure: StructureResolver = (S, context) => {
               singleton(S, 'listingPages', 'listingPagesSingleton', 'Products, E-Catalogue & News Pages', ThListIcon)
             ])
         ),
-      singleton(S, 'siteSettings', 'siteSettingsSingleton', 'Site Settings (admin)', CogIcon),
-      S.documentTypeListItem('license').title('Licenses & Compliance (admin)').icon(DocumentTextIcon)
+      singleton(S, 'siteSettings', 'siteSettingsSingleton', 'Site Settings (owner)', CogIcon),
+      S.documentTypeListItem('license').title('Licenses & Compliance (owner)').icon(DocumentTextIcon)
     ]);
 };

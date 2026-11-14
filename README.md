@@ -59,6 +59,16 @@ The `SANITY_STUDIO_` prefix is required. Sanity only exposes variables with this
 | Events | `/events`, `/events/<slug>` |
 | Licenses & Compliance | Licenses section on the home page (status “Active” only) |
 
+### Who can edit what
+Sanity's free plan only has Administrator and Viewer roles, so editors are invited as **Administrators** and the dashboard decides access with an owner list (`apps/studio/src/access.ts`):
+
+| | Products, Categories, News & Events | Pages, Site Settings, Licenses |
+| --- | --- | --- |
+| Owners (`SANITY_STUDIO_OWNER_IDS`) | Edit | Edit |
+| Everyone else | Edit | Hidden, read-only |
+
+Set owners in `apps/studio/.env.local` (comma-separated user IDs; find yours with `npx sanity debug` while logged in). Empty means no restriction. This is a dashboard-level restriction: editors remain Sanity Administrators, so only invite people you trust and keep API tokens to owners.
+
 ### Seeding the dataset from the current site
 ```
 npm run seed:generate --workspace=@aryajaya/studio   # writes apps/studio/seed/content.ndjson

@@ -3,21 +3,39 @@ import type { CurrentUser } from 'sanity';
 /**
  * Who can change what in the dashboard.
  *
- * - Administrators (Sanity "Administrator" role) see everything: page text,
+ * Sanity's free plan only has Administrator and Viewer roles, so every editor is
+ * an Administrator in Sanity. Access is therefore decided here, by an owner list:
+ *
+ * - Owners (user IDs in SANITY_STUDIO_OWNER_IDS) see everything: page text,
  *   menu, site settings, licenses.
- * - Everyone else (e.g. the "Editor" role) only sees and edits products,
- *   product categories, and news & events. Layout content is hidden and read-only.
+ * - Everyone else only sees and edits products, product categories, and
+ *   news & events. Layout content is hidden, read-only and can't be published.
  *
- * Invite editors at sanity.io/manage → project → Members with the "Editor" role.
+ * Find a user's ID: run `npx sanity debug` while logged in as them (or open
+ * sanity.io/manage → project → Members). Set it in apps/studio/.env.local:
  *
- * Note: this is enforced in the Studio UI. On Sanity's non-Enterprise plans the
- * Editor role can still write any document through the API, so only share API
- * tokens with administrators.
+ *   SANITY_STUDIO_OWNER_IDS=pAbC123,pXyZ789
+ *
+ * If the list is empty, nobody is restricted (everyone is treated as an owner),
+ * so the dashboard keeps working before it's configured.
+ *
+ * Note: this only exists in the dashboard UI. Editors are still Administrators in
+ * Sanity and could change anything through the API or sanity.io/manage, so only
+ * invite people you trust and don't share API tokens.
  */
 export const editorTypes = new Set(['product', 'productCategory', 'event']);
 
-export const isAdmin = (user: Omit<CurrentUser, 'role'> | null | undefined): boolean =>
-  Boolean(user?.roles?.some((role) => role.name === 'administrator'));
+export const ownerIds = new Set(
+  (process.env.SANITY_STUDIO_OWNER_IDS ?? '')
+    .split(',')
+    .map((id) => id.trim())
+    .filter(Boolean)
+);
 
-export const canEditType = (user: Omit<CurrentUser, 'role'> | null | undefined, schemaType: string): boolean =>
-  isAdmin(user) || editorTypes.has(schemaType);
+type User = Omit<CurrentUser, 'role'> | null | undefined;
+
+export const isOwner = (user: User, owners: Set<string> = ownerIds): boolean =>
+  owners.size === 0 ? Boolean(user) : Boolean(user && owners.has(user.id));
+
+export const canEditType = (user: User, schemaType: string, owners: Set<string> = ownerIds): boolean =>
+  isOwner(user, owners) || editorTypes.has(schemaType);

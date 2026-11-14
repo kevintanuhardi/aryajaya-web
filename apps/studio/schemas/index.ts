@@ -10,13 +10,13 @@ import event from './event';
 import sectionHeading from './objects/sectionHeading';
 import callToAction from './objects/callToAction';
 import seo from './objects/seo';
-import { editorTypes, isAdmin } from '../src/access';
+import { editorTypes, isOwner } from '../src/access';
 
-/** Layout/page documents: read-only for anyone who isn't an administrator (see src/access.ts). */
+/** Layout/page documents: read-only for anyone who is not an owner (see src/access.ts). */
 const adminOnly = <T extends { name: string }>(type: T): T =>
   editorTypes.has(type.name)
     ? type
-    : { ...type, readOnly: ({ currentUser }: { currentUser?: Parameters<typeof isAdmin>[0] }) => !isAdmin(currentUser) };
+    : { ...type, readOnly: ({ currentUser }: { currentUser?: Parameters<typeof isOwner>[0] }) => !isOwner(currentUser) };
 
 const documentTypes = [
   siteSettings,
