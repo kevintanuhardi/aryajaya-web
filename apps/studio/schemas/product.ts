@@ -1,37 +1,37 @@
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType } from 'sanity';
+import { PackageIcon } from '@sanity/icons';
 
 export default defineType({
   name: 'product',
-  title: 'Produk',
+  title: 'Product',
   type: 'document',
+  icon: PackageIcon,
   groups: [
-    { name: 'summary', title: 'Ringkasan' },
-    { name: 'content', title: 'Konten' },
-    { name: 'compliance', title: 'Compliance' }
+    { name: 'summary', title: 'Summary', default: true },
+    { name: 'content', title: 'Details' },
+    { name: 'links', title: 'Links & documents' }
   ],
   fields: [
     defineField({
       name: 'title',
       type: 'string',
-      title: 'Nama Produk',
+      title: 'Product name',
       group: 'summary',
       validation: (rule) => rule.required()
     }),
     defineField({
       name: 'slug',
       type: 'slug',
-      title: 'Slug',
-      options: {
-        source: 'title',
-        maxLength: 96
-      },
+      title: 'URL slug',
+      description: 'The page address: /products/<slug>.',
+      options: { source: 'title', maxLength: 96 },
       group: 'summary',
       validation: (rule) => rule.required()
     }),
     defineField({
       name: 'category',
       type: 'reference',
-      title: 'Kategori',
+      title: 'Category',
       to: [{ type: 'productCategory' }],
       group: 'summary',
       validation: (rule) => rule.required()
@@ -40,86 +40,99 @@ export default defineType({
       name: 'shortDescription',
       type: 'text',
       rows: 3,
-      title: 'Deskripsi Singkat',
+      title: 'Short description',
+      description: 'One or two sentences. Avoid exaggerated clinical claims.',
       group: 'summary',
-      validation: (rule) => rule.required()
+      validation: (rule) => rule.required().max(300)
     }),
     defineField({
-      name: 'body',
-      type: 'array',
-      of: [{ type: 'block' }],
-      title: 'Konten Detail',
-      group: 'content'
+      name: 'manufacturer',
+      type: 'string',
+      title: 'Manufacturer',
+      group: 'summary'
     }),
     defineField({
       name: 'images',
       type: 'array',
-      title: 'Galeri',
-      of: [
-        defineField({
-          name: 'image',
-          type: 'image',
-          options: { hotspot: true }
-        })
-      ],
-      group: 'content'
+      title: 'Images',
+      description: 'The first image is used on product cards and the detail page.',
+      group: 'summary',
+      of: [defineArrayMember({ type: 'image', options: { hotspot: true } })]
+    }),
+    defineField({
+      name: 'body',
+      type: 'array',
+      title: 'Description',
+      group: 'content',
+      of: [defineArrayMember({ type: 'block', styles: [{ title: 'Normal', value: 'normal' }], lists: [] })]
+    }),
+    defineField({
+      name: 'highlights',
+      type: 'array',
+      title: 'Highlights',
+      group: 'content',
+      of: [defineArrayMember({ type: 'string' })]
     }),
     defineField({
       name: 'specifications',
       type: 'array',
-      title: 'Spesifikasi',
+      title: 'Specifications',
       group: 'content',
       of: [
-        defineField({
+        defineArrayMember({
           name: 'spec',
           type: 'object',
           fields: [
-            { name: 'label', type: 'string', title: 'Label' },
-            { name: 'value', type: 'string', title: 'Nilai' }
-          ]
+            defineField({ name: 'label', type: 'string', title: 'Label', validation: (rule) => rule.required() }),
+            defineField({ name: 'value', type: 'string', title: 'Value', validation: (rule) => rule.required() })
+          ],
+          preview: { select: { title: 'label', subtitle: 'value' } }
         })
       ]
     }),
     defineField({
       name: 'tags',
       type: 'array',
-      title: 'Tag',
-      of: [{ type: 'string' }],
-      options: {
-        layout: 'tags'
-      }
+      title: 'Tags',
+      group: 'content',
+      of: [defineArrayMember({ type: 'string' })],
+      options: { layout: 'tags' }
     }),
     defineField({
-      name: 'manufacturer',
-      type: 'string',
-      title: 'Produsen Referensi',
-      description: 'Catat sumber referensi publik jika menggunakan sample data'
+      name: 'catalogUrl',
+      type: 'url',
+      title: 'INAPROC e-catalogue link',
+      description: 'Products with a link appear on the E-Catalogue page.',
+      group: 'links'
+    }),
+    defineField({
+      name: 'brochure',
+      type: 'file',
+      title: 'Brochure (PDF)',
+      options: { accept: 'application/pdf' },
+      group: 'links'
     }),
     defineField({
       name: 'sourceUrl',
       type: 'url',
-      title: 'Link Produsen'
+      title: 'External document link',
+      description: 'Used only when no brochure PDF is uploaded.',
+      group: 'links'
     }),
     defineField({
-      name: 'sampleData',
-      type: 'boolean',
-      title: 'Sample Data?',
-      initialValue: true,
-      group: 'compliance'
-    }),
-    defineField({
-      name: 'inquiryCta',
+      name: 'sourceLabel',
       type: 'string',
-      title: 'CTA Kustom',
-      description: 'Opsional: override teks tombol WhatsApp',
-      group: 'compliance'
-    })
+      title: 'Document button label',
+      description: 'e.g. “Open JUVENO brochure”.',
+      group: 'links'
+    }),
+    defineField({ name: 'order', type: 'number', title: 'Sort order', initialValue: 0, group: 'summary' })
+  ],
+  orderings: [
+    { title: 'Sort order', name: 'orderAsc', by: [{ field: 'order', direction: 'asc' }] },
+    { title: 'Name', name: 'titleAsc', by: [{ field: 'title', direction: 'asc' }] }
   ],
   preview: {
-    select: {
-      title: 'title',
-      subtitle: 'shortDescription',
-      media: 'images.0'
-    }
+    select: { title: 'title', subtitle: 'category.title', media: 'images.0' }
   }
 });

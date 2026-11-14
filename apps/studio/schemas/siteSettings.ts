@@ -1,18 +1,21 @@
-import { defineField, defineType } from 'sanity';
+import { defineArrayMember, defineField, defineType } from 'sanity';
+import { CogIcon } from '@sanity/icons';
 
 export default defineType({
   name: 'siteSettings',
   type: 'document',
   title: 'Site Settings',
+  icon: CogIcon,
   groups: [
-    { name: 'info', title: 'Informasi' },
-    { name: 'contact', title: 'Kontak' }
+    { name: 'info', title: 'Company', default: true },
+    { name: 'contact', title: 'Contact' },
+    { name: 'compliance', title: 'Compliance' }
   ],
   fields: [
     defineField({
       name: 'name',
       type: 'string',
-      title: 'Nama Perusahaan',
+      title: 'Company name',
       group: 'info',
       validation: (rule) => rule.required()
     }),
@@ -21,71 +24,63 @@ export default defineType({
       type: 'text',
       rows: 2,
       title: 'Tagline',
+      description: 'Shown in the footer under the company name.',
       group: 'info'
+    }),
+    defineField({
+      name: 'logo',
+      type: 'image',
+      title: 'Logo',
+      description: 'Square PNG works best. Used in the header, footer and favicon.',
+      group: 'info'
+    }),
+    defineField({
+      name: 'socialLinks',
+      type: 'array',
+      title: 'Social links',
+      group: 'info',
+      of: [
+        defineArrayMember({
+          name: 'link',
+          type: 'object',
+          fields: [
+            defineField({ name: 'label', type: 'string', title: 'Label', validation: (rule) => rule.required() }),
+            defineField({ name: 'url', type: 'url', title: 'URL', validation: (rule) => rule.required() })
+          ]
+        })
+      ]
     }),
     defineField({
       name: 'whatsappNumber',
       type: 'string',
-      title: 'Nomor WhatsApp',
+      title: 'WhatsApp number (display)',
+      description: 'Formatted for people to read, e.g. +62 821-1458-2810.',
       group: 'contact',
       validation: (rule) => rule.required()
     }),
     defineField({
       name: 'whatsappLink',
       type: 'url',
-      title: 'Link WhatsApp',
+      title: 'WhatsApp link',
+      description: 'Used by every “Consult via WhatsApp” button, e.g. https://wa.me/6282114582810.',
       initialValue: 'https://wa.me/6282114582810',
-      group: 'contact'
+      group: 'contact',
+      validation: (rule) => rule.required()
     }),
-    defineField({
-      name: 'email',
-      type: 'string',
-      title: 'Email',
-      group: 'contact'
-    }),
-    defineField({
-      name: 'address',
-      type: 'text',
-      rows: 3,
-      title: 'Alamat',
-      group: 'contact'
-    }),
-    defineField({
-      name: 'mapUrl',
-      type: 'url',
-      title: 'Map URL',
-      group: 'contact'
-    }),
-    defineField({
-      name: 'socialLinks',
-      type: 'array',
-      title: 'Social Links',
-      of: [
-        defineField({
-          name: 'link',
-          type: 'object',
-          fields: [
-            { name: 'label', type: 'string', title: 'Label' },
-            { name: 'url', type: 'url', title: 'URL' }
-          ]
-        })
-      ],
-      group: 'info'
-    }),
+    defineField({ name: 'email', type: 'string', title: 'Email', group: 'contact' }),
+    defineField({ name: 'address', type: 'text', rows: 3, title: 'Address', group: 'contact' }),
+    defineField({ name: 'mapUrl', type: 'url', title: 'Google Maps link', group: 'contact' }),
     defineField({
       name: 'disclaimer',
       type: 'text',
       rows: 3,
-      title: 'Disclaimer',
-      description: 'Tampilkan peringatan kepatuhan medis secara sitewide',
-      initialValue:
-        'Informasi di website ini bersifat edukatif dan bukan pengganti konsultasi dokter. Penggunaan alat kesehatan mengikuti indikasi dan petunjuk penggunaan resmi.'
+      title: 'Medical disclaimer',
+      description: 'Shown in the footer of every page. Required for medical compliance.',
+      group: 'compliance',
+      validation: (rule) => rule.required()
     })
   ],
   preview: {
-    select: {
-      title: 'name',
-      subtitle: 'tagline'
-    }
+    select: { title: 'name', subtitle: 'tagline', media: 'logo' }
   }
 });

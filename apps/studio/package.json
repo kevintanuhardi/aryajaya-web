@@ -7,7 +7,9 @@
     "dev": "sanity dev",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "lint": "sanity check"
+    "lint": "sanity check",
+    "seed:generate": "node --experimental-strip-types --no-warnings scripts/generate-seed.mjs",
+    "seed:import": "sanity dataset import seed/content.ndjson production --replace"
   },
   "dependencies": {
     "@sanity/icons": "^2.11.3",

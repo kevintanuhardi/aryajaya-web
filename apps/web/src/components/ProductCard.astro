@@ -1,6 +1,6 @@
 ---
-import type { Product } from '../data/products';
-import { getCategory } from '../data/products';
+import type { Product } from '../lib/content';
+import { getCategory } from '../lib/content';
 import WhatsappButton from './WhatsappButton.astro';
 
 const { product, compact = false } = Astro.props as {
@@ -16,8 +16,8 @@ const category = getCategory(product.categoryId);
   aria-label={`View details for ${product.name}`}
 >
   <article class="flex h-full flex-col">
-  <div class="space-y-2 bg-slate-900 px-4 py-4 text-white">
-    <div class="text-xs font-semibold uppercase tracking-wide text-emerald-200">
+  <div class="space-y-2 bg-ink-900 px-4 py-4 text-white">
+    <div class="eyebrow-sm-200">
       {category?.name}
     </div>
     <h3 class="text-lg font-semibold leading-tight">
@@ -25,24 +25,24 @@ const category = getCategory(product.categoryId);
         {product.name}
       </span>
     </h3>
-    <p class="text-sm text-slate-200 line-clamp-2">{product.shortDescription}</p>
+    <p class="text-sm text-ink-200 line-clamp-2">{product.shortDescription}</p>
     {product.catalogUrl && (
-      <p class="text-xs font-semibold uppercase tracking-wide text-amber-200">E-Catalogue Available</p>
+      <p class="text-xs font-semibold uppercase tracking-wide text-accent-200">E-Catalogue Available</p>
     )}
   </div>
   {product.heroImage ? (
     <img
       src={product.heroImage}
       alt={product.name}
-      class="h-48 w-full bg-slate-50 object-contain p-4"
+      class="h-48 w-full bg-ink-50 object-contain p-4"
       loading="lazy"
     />
   ) : (
-    <div class="flex h-48 w-full flex-col justify-between bg-gradient-to-br from-white via-slate-50 to-emerald-50 p-5">
+    <div class="flex h-48 w-full flex-col justify-between bg-gradient-to-br from-white via-ink-50 to-brand-50 p-5">
       <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand">{category?.name}</p>
       <div class="space-y-2">
         <div class="h-10 w-10 rounded-2xl border border-brand/20 bg-brand/10"></div>
-        <p class="text-base font-semibold leading-tight text-slate-900">{product.name}</p>
+        <p class="text-base font-semibold leading-tight text-ink-900">{product.name}</p>
       </div>
     </div>
   )}

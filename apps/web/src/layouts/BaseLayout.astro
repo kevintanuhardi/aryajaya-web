@@ -1,6 +1,8 @@
 ---
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { siteSettings } from '../lib/content';
+import tokens from '../../../../design-system/tokens.json';
 import '../styles/global.css';
 
 const { title = 'Arjaya Langgeng Medika', description = 'Orthopedic medical device distribution', structuredData } = Astro.props as {
@@ -16,13 +18,17 @@ const { title = 'Arjaya Langgeng Medika', description = 'Orthopedic medical devi
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/png" href="/images/client/logos/arjaya.png" />
-    <link rel="apple-touch-icon" href="/images/client/logos/arjaya.png" />
+    <meta name="theme-color" content={tokens.color.brand['500']} />
+    <link rel="icon" type="image/png" href={siteSettings.logo} />
+    <link rel="apple-touch-icon" href={siteSettings.logo} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href={tokens.font.googleFontsHref} />
     {structuredData && (
       <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
     )}
   </head>
-  <body class="text-slate-900">
+  <body>
     <SiteHeader />
     <main>
       <slot />

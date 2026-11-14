@@ -1,15 +1,15 @@
 ---
-import type { partners } from '../data/home';
+import type { partners } from '../lib/content';
 const { items } = Astro.props as { items: typeof partners };
 const fallbackImage = '/images/client/logos/arjaya.png';
 const sliderId = `partners-slider-${Math.random().toString(36).slice(2, 8)}`;
 ---
-<section class="bg-slate-50" data-partners-slider={sliderId}>
-  <div class="mx-auto max-w-6xl px-4 py-16">
+<section class="bg-ink-50" data-partners-slider={sliderId}>
+  <div class="container-page section">
     <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
-        <p class="text-sm font-semibold uppercase tracking-wide text-brand">Partners</p>
-        <h2 class="text-3xl font-semibold text-slate-900">Technology and Manufacturing Partners</h2>
+        <p class="eyebrow">Partners</p>
+        <h2 class="heading-section">Technology and Manufacturing Partners</h2>
       </div>
     </div>
     <div class="relative">
@@ -17,8 +17,8 @@ const sliderId = `partners-slider-${Math.random().toString(36).slice(2, 8)}`;
         <div class="partner-track flex transition-transform duration-500 ease-out" aria-label="Partner carousel">
           {items.map((partner) => (
             <div class="w-full flex-none px-2 md:w-1/2 lg:w-1/3">
-              <article class="h-full rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
-                <div class="h-32 w-full overflow-hidden rounded-xl bg-slate-100">
+              <article class="h-full rounded-2xl border border-ink-100 bg-white p-4 shadow-sm">
+                <div class="h-32 w-full overflow-hidden rounded-xl bg-ink-100">
                   <img
                     src={partner.image || fallbackImage}
                     alt={partner.name}
@@ -27,36 +27,20 @@ const sliderId = `partners-slider-${Math.random().toString(36).slice(2, 8)}`;
                   />
                 </div>
                 <div class="mt-4 space-y-1">
-                  <p class="text-sm font-semibold text-slate-900">{partner.name}</p>
-                  <p class="text-xs text-slate-500">{partner.subtitle}</p>
+                  <p class="text-sm font-semibold text-ink-900">{partner.name}</p>
+                  <p class="text-xs text-ink-500">{partner.subtitle}</p>
                 </div>
               </article>
             </div>
           ))}
         </div>
       </div>
-      <button class="p-nav left-0" type="button" data-prev aria-label="Previous partners">‹</button>
-      <button class="p-nav right-0" type="button" data-next aria-label="Next partners">›</button>
+      <button class="slider-nav left-0" type="button" data-prev aria-label="Previous partners">‹</button>
+      <button class="slider-nav right-0" type="button" data-next aria-label="Next partners">›</button>
       <div class="p-dots mt-4 flex justify-center gap-2" data-dots></div>
     </div>
   </div>
 </section>
-
-<style>
-  .p-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    border-radius: 9999px;
-    background: #fff;
-    padding: 0.5rem 0.75rem;
-    color: #0f172a;
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
-  }
-  .p-nav:hover { background: #f8fafc; }
-  .p-dot.active { background: #0D7C66; }
-</style>
 
 <script define:vars={{ sliderId }}>
   const root = document.querySelector(`[data-partners-slider="${sliderId}"]`);
@@ -83,7 +67,7 @@ const sliderId = `partners-slider-${Math.random().toString(36).slice(2, 8)}`;
       for (let index = 0; index < pageCount; index += 1) {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'p-dot h-2.5 w-2.5 rounded-full bg-slate-300';
+        button.className = 'p-dot h-2.5 w-2.5 rounded-full bg-ink-300';
         button.setAttribute('aria-label', `Partner page ${index + 1}`);
         button.addEventListener('click', () => {
           pageIndex = index;
@@ -98,7 +82,8 @@ const sliderId = `partners-slider-${Math.random().toString(36).slice(2, 8)}`;
       track.style.transform = `translateX(-${pageIndex * 100}%)`;
       const dots = Array.from(root.querySelectorAll('.p-dot'));
       dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === pageIndex);
+        dot.classList.toggle('bg-brand', index === pageIndex);
+        dot.classList.toggle('bg-ink-300', index !== pageIndex);
       });
       prevButton?.toggleAttribute('disabled', pageIndex === 0);
       nextButton?.toggleAttribute('disabled', pageIndex >= pageCount - 1);

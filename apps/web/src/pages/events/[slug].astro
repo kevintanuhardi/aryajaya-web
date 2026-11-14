@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { events } from '../../data/events';
-import type { EventItem } from '../../data/events';
+import { events } from '../../lib/content';
+import type { EventItem } from '../../lib/content';
 import WhatsappButton from '../../components/WhatsappButton.astro';
 
 export async function getStaticPaths() {
@@ -33,32 +33,32 @@ const createdAtLabel = new Date(event.createdAt).toLocaleDateString('en-US', {
 >
   <article class="bg-white">
     <div class="mx-auto max-w-5xl px-4 py-16">
-      <nav class="text-sm text-slate-500">
+      <nav class="text-sm text-ink-500">
         <a href="/events" class="hover:text-brand">← Back to events</a>
       </nav>
       <div class="mt-6 grid gap-10 md:grid-cols-[1.2fr_0.8fr]">
         <div class="space-y-6">
-          <p class="text-xs font-semibold uppercase tracking-wide text-brand">{event.eventDate}</p>
-          <h1 class="text-4xl font-semibold text-slate-900">{event.title}</h1>
-          <p class="text-sm leading-7 text-slate-600">{event.excerpt}</p>
+          <p class="eyebrow-sm">{event.eventDate}</p>
+          <h1 class="text-4xl font-semibold text-ink-900">{event.title}</h1>
+          <p class="text-sm leading-7 text-ink-600">{event.excerpt}</p>
           <img src={event.image} alt={event.title} class="w-full rounded-3xl object-cover shadow-lg" />
-          <div class="space-y-5 text-sm leading-7 text-slate-700">
+          <div class="space-y-5 text-sm leading-7 text-ink-700">
             {event.body.map((paragraph) => (
               <p>{paragraph}</p>
             ))}
           </div>
         </div>
         <aside class="space-y-5">
-          <div class="rounded-3xl border border-slate-100 bg-slate-50 p-6">
-            <p class="text-sm font-semibold text-slate-500">Event information</p>
+          <div class="rounded-3xl border border-ink-100 bg-ink-50 p-6">
+            <p class="text-sm font-semibold text-ink-500">Event information</p>
             <dl class="mt-4 space-y-4">
               <div>
-                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Event date</dt>
-                <dd class="mt-1 text-sm text-slate-700">{event.eventDate}</dd>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-ink-500">Event date</dt>
+                <dd class="mt-1 text-sm text-ink-700">{event.eventDate}</dd>
               </div>
               <div>
-                <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Created at</dt>
-                <dd class="mt-1 text-sm text-slate-700">{createdAtLabel}</dd>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-ink-500">Created at</dt>
+                <dd class="mt-1 text-sm text-ink-700">{createdAtLabel}</dd>
               </div>
             </dl>
           </div>

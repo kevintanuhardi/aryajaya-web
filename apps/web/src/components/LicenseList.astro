@@ -1,12 +1,12 @@
 ---
-import { licenses } from '../data/licenses';
+import { licenses } from '../lib/content';
 ---
-<section class="bg-slate-900 text-slate-100">
-  <div class="mx-auto max-w-6xl px-4 py-16">
+<section class="bg-ink-900 text-ink-100">
+  <div class="container-page section">
     <div class="mb-10 max-w-2xl">
-      <p class="text-sm font-semibold uppercase tracking-wide text-amber-300">Licenses & Compliance</p>
+      <p class="text-sm font-semibold uppercase tracking-wide text-accent-300">Licenses & Compliance</p>
       <h2 class="text-3xl font-semibold">Company Compliance Registrations</h2>
-      <p class="mt-4 text-slate-300">
+      <p class="mt-4 text-ink-300">
         Registration numbers are displayed for reference. Full certificate documents are not published on the website.
       </p>
     </div>
@@ -14,18 +14,18 @@ import { licenses } from '../data/licenses';
       {licenses.map((license) => (
         <article class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-black/10">
           <div class="mb-4 flex items-center gap-4">
-            <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-300/30 bg-emerald-400/10">
-              <div class="h-8 w-8 rounded-full border-2 border-emerald-300/70"></div>
+            <div class="flex h-14 w-14 items-center justify-center rounded-2xl border border-brand-300/30 bg-brand-400/10">
+              <div class="h-8 w-8 rounded-full border-2 border-brand-300/70"></div>
             </div>
             <div>
-              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-200">{license.label}</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand-200">{license.label}</p>
               <h3 class="text-lg font-semibold">{license.title}</h3>
             </div>
           </div>
-          <p class="rounded-xl border border-white/10 bg-slate-950/40 px-4 py-3 font-mono text-sm text-amber-200">
+          <p class="rounded-xl border border-white/10 bg-ink-950/40 px-4 py-3 font-mono text-sm text-accent-200">
             {license.registrationNumber}
           </p>
-          <p class="mt-2 text-sm text-slate-300">{license.description}</p>
+          <p class="mt-2 text-sm text-ink-300">{license.description}</p>
         </article>
       ))}
     </div>

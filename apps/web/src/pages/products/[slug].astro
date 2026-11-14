@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { products, getCategory } from '../../data/products';
-import type { Product } from '../../data/products';
+import { products, getCategory } from '../../lib/content';
+import type { Product } from '../../lib/content';
 import WhatsappButton from '../../components/WhatsappButton.astro';
 
 export async function getStaticPaths() {
@@ -28,40 +28,40 @@ const category = getCategory(product.categoryId);
 >
   <article class="bg-white">
     <div class="mx-auto max-w-5xl px-4 py-16">
-      <nav class="text-sm text-slate-500">
+      <nav class="text-sm text-ink-500">
         <a href="/products" class="hover:text-brand">← Back to products</a>
       </nav>
       <div class="mt-6 grid gap-10 md:grid-cols-2">
         {product.heroImage ? (
-          <div class="flex min-h-[360px] items-center justify-center rounded-3xl bg-slate-50 p-6 shadow-lg">
+          <div class="flex min-h-[360px] items-center justify-center rounded-3xl bg-ink-50 p-6 shadow-lg">
             <img src={product.heroImage} alt={product.name} class="max-h-[420px] w-full object-contain" loading="lazy" />
           </div>
         ) : (
-          <div class="flex min-h-[360px] flex-col justify-between rounded-3xl bg-gradient-to-br from-white via-slate-50 to-emerald-50 p-8 shadow-lg">
+          <div class="flex min-h-[360px] flex-col justify-between rounded-3xl bg-gradient-to-br from-white via-ink-50 to-brand-50 p-8 shadow-lg">
             <p class="text-xs font-semibold uppercase tracking-[0.2em] text-brand">{category?.name}</p>
             <div class="space-y-4">
               <div class="h-16 w-16 rounded-[1.5rem] border border-brand/20 bg-brand/10"></div>
-              <h2 class="max-w-md text-3xl font-semibold leading-tight text-slate-900">{product.name}</h2>
-              <p class="max-w-lg text-sm leading-6 text-slate-600">The product visual will be updated once the final image asset is available.</p>
+              <h2 class="max-w-md text-3xl font-semibold leading-tight text-ink-900">{product.name}</h2>
+              <p class="max-w-lg text-sm leading-6 text-ink-600">The product visual will be updated once the final image asset is available.</p>
             </div>
           </div>
         )}
         <div class="space-y-4">
-          <p class="text-xs font-semibold uppercase tracking-wide text-brand">{category?.name}</p>
-          <h1 class="text-4xl font-semibold text-slate-900">{product.name}</h1>
-          <p class="text-slate-600">{product.shortDescription}</p>
-          <p class="text-sm leading-6 text-slate-600">{product.body}</p>
+          <p class="eyebrow-sm">{category?.name}</p>
+          <h1 class="text-4xl font-semibold text-ink-900">{product.name}</h1>
+          <p class="text-ink-600">{product.shortDescription}</p>
+          <p class="text-sm leading-6 text-ink-600">{product.body}</p>
           <div class="space-y-2">
-            <p class="text-sm font-semibold text-slate-500">Highlights</p>
-            <ul class="list-disc space-y-1 pl-5 text-sm text-slate-600">
+            <p class="text-sm font-semibold text-ink-500">Highlights</p>
+            <ul class="list-disc space-y-1 pl-5 text-sm text-ink-600">
               {product.highlights.map((item) => (
                 <li>{item}</li>
               ))}
             </ul>
           </div>
-          <div class="rounded-2xl bg-slate-50 p-4 text-xs">
-            <p class="font-semibold text-slate-500">Product information</p>
-            <p class="text-slate-600">{product.manufacturer}</p>
+          <div class="rounded-2xl bg-ink-50 p-4 text-xs">
+            <p class="font-semibold text-ink-500">Product information</p>
+            <p class="text-ink-600">{product.manufacturer}</p>
             {product.source && (
               <a href={product.source} class="mt-2 inline-flex text-brand" target="_blank" rel="noreferrer">
                 {product.sourceLabel ?? 'Open product document'}
@@ -75,7 +75,7 @@ const category = getCategory(product.categoryId);
                 href={product.catalogUrl}
                 target="_blank"
                 rel="noreferrer"
-                class="inline-flex items-center rounded-full border border-slate-200 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+                class="btn btn-dark"
               >
                 Open e-catalogue
               </a>
@@ -84,12 +84,12 @@ const category = getCategory(product.categoryId);
         </div>
       </div>
       <section class="mt-12">
-        <h2 class="text-2xl font-semibold text-slate-900">Specifications</h2>
+        <h2 class="text-2xl font-semibold text-ink-900">Specifications</h2>
         <dl class="mt-4 grid gap-4 sm:grid-cols-2">
           {Object.entries(product.specifications).map(([key, value]) => (
-            <div class="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3">
-              <dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">{key}</dt>
-              <dd class="text-sm text-slate-700">{value}</dd>
+            <div class="rounded-2xl border border-ink-100 bg-ink-50 px-4 py-3">
+              <dt class="text-xs font-semibold uppercase tracking-wide text-ink-500">{key}</dt>
+              <dd class="text-sm text-ink-700">{value}</dd>
             </div>
           ))}
         </dl>

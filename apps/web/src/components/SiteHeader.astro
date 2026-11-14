@@ -1,5 +1,5 @@
 ---
-import { siteSettings } from '../data/siteSettings';
+import { siteSettings } from '../lib/content';
 import WhatsappButton from './WhatsappButton.astro';
 
 const navLinks = [
@@ -10,13 +10,13 @@ const navLinks = [
   { href: '/contact', label: 'Contact' }
 ];
 ---
-<header class="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur" data-site-header>
+<header class="sticky top-0 z-50 border-b border-ink-100 bg-white/95 backdrop-blur" data-site-header>
   <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-    <a class="flex items-center gap-3 text-xl font-semibold text-slate-900" href="/">
+    <a class="flex items-center gap-3 text-xl font-semibold text-ink-900" href="/">
       <img src={siteSettings.logo} alt={`${siteSettings.name} logo`} class="h-11 w-11 rounded-full object-contain" />
       <span class="hidden sm:inline">{siteSettings.name}</span>
     </a>
-    <nav class="hidden gap-6 text-sm font-medium text-slate-700 md:flex">
+    <nav class="hidden gap-6 text-sm font-medium text-ink-700 md:flex">
       {navLinks.map((link) => (
         <a href={link.href} class="transition hover:text-brand" aria-label={link.label}>
           {link.label}
@@ -27,7 +27,7 @@ const navLinks = [
       <WhatsappButton size="sm" />
     </div>
     <button
-      class="inline-flex h-11 w-11 items-center justify-center rounded-md text-2xl leading-none text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 md:hidden"
+      class="inline-flex h-11 w-11 items-center justify-center rounded-md text-2xl leading-none text-ink-700 transition hover:bg-ink-100 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 md:hidden"
       type="button"
       aria-label="Open menu"
       aria-expanded="false"
@@ -38,10 +38,10 @@ const navLinks = [
       <span class="hidden" aria-hidden="true" data-menu-icon-close>×</span>
     </button>
   </div>
-  <div id="mobile-menu" class="hidden border-t border-slate-100 bg-white px-4 pb-5 pt-2 shadow-lg md:hidden" data-mobile-menu>
-    <nav class="mx-auto flex max-w-6xl flex-col gap-1 text-base font-medium text-slate-700" aria-label="Mobile navigation">
+  <div id="mobile-menu" class="hidden border-t border-ink-100 bg-white px-4 pb-5 pt-2 shadow-lg md:hidden" data-mobile-menu>
+    <nav class="mx-auto flex max-w-6xl flex-col gap-1 text-base font-medium text-ink-700" aria-label="Mobile navigation">
       {navLinks.map((link) => (
-        <a href={link.href} class="rounded-md px-2 py-3 transition hover:bg-slate-50 hover:text-brand" aria-label={link.label}>
+        <a href={link.href} class="rounded-md px-2 py-3 transition hover:bg-ink-50 hover:text-brand" aria-label={link.label}>
           {link.label}
         </a>
       ))}
