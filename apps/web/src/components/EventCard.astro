@@ -1,17 +1,17 @@
 ---
-import type { EventItem } from '../lib/content';
+import { postKindLabels, type EventItem } from '../lib/content';
 
 const { event } = Astro.props as { event: EventItem };
 ---
 <a
   href={`/events/${event.slug}`}
   class="group flex h-full flex-col overflow-hidden rounded-2xl border border-ink-100 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
-  aria-label={`View event details for ${event.title}`}
+  aria-label={`Read more: ${event.title}`}
 >
   <img src={event.image} alt={event.title} class="h-56 w-full object-cover" loading="lazy" />
   <article class="flex h-full flex-col p-6">
     <div class="space-y-2">
-      <p class="eyebrow-sm">{event.eventDate}</p>
+      <p class="eyebrow-sm">{postKindLabels[event.kind]} · {event.eventDate}</p>
       <h2 class="text-2xl font-semibold leading-tight text-ink-900">
         <span class="group-hover:underline">{event.title}</span>
       </h2>

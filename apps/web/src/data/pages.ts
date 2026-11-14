@@ -64,11 +64,11 @@ export const listingPages = {
   },
   events: {
     seo: {
-      title: 'Arjaya Events',
+      title: 'Arjaya News & Events',
       description: 'Training, launches, and workshop activities from Arjaya Langgeng Medika'
     },
     intro: {
-      eyebrow: 'Events',
+      eyebrow: 'News & Events',
       heading: 'Training, launches, and field activities',
       description:
         'A record of Arjaya Langgeng Medika events, workshops, and strategic activities with healthcare professionals and technology partners.'

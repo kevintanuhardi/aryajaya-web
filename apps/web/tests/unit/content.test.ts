@@ -280,6 +280,7 @@ describe('content.ts with a full Sanity response', () => {
   it('maps events: publishedAt -> createdAt, portable text body -> paragraphs, label kept', async () => {
     const { content } = await loadWithCms(fullCms);
     expect(content.events[0]).toEqual({
+      kind: 'event',
       slug: 'cms-event-with-label',
       title: 'Labelled',
       createdAt: '2026-10-01T08:00:00Z',
@@ -296,6 +297,7 @@ describe('content.ts with a full Sanity response', () => {
   it('formats eventDateStart (en-US, long month) when eventDate is empty, and defaults other fields', async () => {
     const { content } = await loadWithCms(fullCms);
     expect(content.events[1]).toEqual({
+      kind: 'event',
       slug: 'cms-event-no-label',
       title: 'Unlabelled',
       createdAt: '2026-09-01T08:00:00Z',
@@ -305,7 +307,7 @@ describe('content.ts with a full Sanity response', () => {
       body: [],
       image: '',
       sourceUrl: '',
-      sourceLabel: 'Open event folder'
+      sourceLabel: 'Open folder'
     });
   });
 
@@ -421,6 +423,30 @@ describe('content.ts once Sanity is in use (Site Settings exists)', () => {
     expect(content.products[0].categoryId).toBe('');
     expect(content.getCategory(content.products[0].categoryId)).toBeUndefined();
     expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('orphan'));
+  });
+});
+
+describe('News & Events kinds', () => {
+  it('dates news and articles by publish date and ignores event-only fields', async () => {
+    const { content } = await loadWithCms({
+      ...fullCms,
+      events: [
+        { ...cmsEvents[0], slug: 'a-news', kind: 'news', publishedAt: '2026-06-10T08:00:00Z' },
+        { ...cmsEvents[0], slug: 'an-article', kind: 'article', publishedAt: '2026-04-01T08:00:00Z', eventDateStart: null },
+        { ...cmsEvents[0], slug: 'legacy', kind: null }
+      ]
+    });
+    const bySlug = Object.fromEntries(content.events.map((event) => [event.slug, event]));
+    expect(bySlug['a-news']).toMatchObject({ kind: 'news', eventDate: 'June 10, 2026', eventDateStart: '2026-06-10' });
+    expect(bySlug['an-article']).toMatchObject({ kind: 'article', eventDate: 'April 1, 2026', eventDateStart: '2026-04-01' });
+    // Documents created before the "Type" field existed are events.
+    expect(bySlug['legacy']).toMatchObject({ kind: 'event', eventDate: 'October 1-2, 2026' });
+  });
+
+  it('local posts are all events', async () => {
+    stubSanityEnv();
+    const content = await loadContent();
+    expect(content.events.every((event) => event.kind === 'event')).toBe(true);
   });
 });
 

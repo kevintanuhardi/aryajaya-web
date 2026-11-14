@@ -29,10 +29,11 @@ import {
 } from '../data/pages';
 import { productCategories as localCategories, type ProductCategory } from '../data/categories';
 import { products as localProducts, type Product } from '../data/products';
-import { events as localEvents, type EventItem } from '../data/events';
+import { events as localEvents, postKindLabels, type EventItem, type PostKind } from '../data/events';
 import { licenses as localLicenses } from '../data/licenses';
 
-export type { Product, ProductCategory, EventItem };
+export type { Product, ProductCategory, EventItem, PostKind };
+export { postKindLabels };
 
 type PortableText = Parameters<typeof toParagraphs>[0];
 
@@ -93,7 +94,7 @@ const query = `{
     "heroImage": images[0].asset->url
   },
   "events": *[_type == "event" && defined(slug.current)] | order(publishedAt desc){
-    "slug": slug.current, title, publishedAt, eventDate, eventDateStart, excerpt, body,
+    kind, "slug": slug.current, title, publishedAt, eventDate, eventDateStart, excerpt, body,
     "image": image.asset->url, sourceUrl, sourceLabel
   },
   "licenses": *[_type == "license" && status == "active"] | order(order asc, title asc){
@@ -141,7 +142,11 @@ type CmsResult = {
     | null;
   events:
     | (Nullable<Pick<EventItem, 'eventDate' | 'image' | 'sourceUrl' | 'sourceLabel'>> &
-        Pick<EventItem, 'slug' | 'title' | 'eventDateStart' | 'excerpt'> & { publishedAt: string; body?: PortableText })[]
+        Pick<EventItem, 'slug' | 'title' | 'eventDateStart' | 'excerpt'> & {
+          kind?: PostKind | null;
+          publishedAt: string;
+          body?: PortableText;
+        })[]
     | null;
   licenses: (Nullable<(typeof localLicenses)[number]> & { title: string })[] | null;
 };
@@ -302,19 +307,23 @@ export const formatDate = (isoDate: string | null | undefined): string => {
 
 export const events: EventItem[] = cmsInUse
   ? (cms?.events ?? []).map((event) => {
-      // The start date is required in the dashboard; publishedAt is a last resort for old documents.
-      const start = event.eventDateStart || event.publishedAt?.slice(0, 10) || '';
+      const kind: PostKind = event.kind && event.kind in postKindLabels ? event.kind : 'event';
+      const published = event.publishedAt?.slice(0, 10) || '';
+      // News and articles are dated by publish date. Events use their start date
+      // (required in the dashboard), with publishedAt as a last resort.
+      const start = kind === 'event' ? event.eventDateStart || published : published;
       return {
+        kind,
         slug: event.slug,
         title: event.title,
         createdAt: event.publishedAt,
-        eventDate: event.eventDate?.trim() || formatDate(start),
+        eventDate: (kind === 'event' && event.eventDate?.trim()) || formatDate(start),
         eventDateStart: start,
         excerpt: event.excerpt,
         body: toParagraphs(event.body),
         image: event.image ?? '',
         sourceUrl: event.sourceUrl ?? '',
-        sourceLabel: event.sourceLabel ?? 'Open event folder'
+        sourceLabel: event.sourceLabel ?? 'Open folder'
       };
     })
   : localEvents;

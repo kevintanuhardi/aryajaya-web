@@ -196,6 +196,7 @@ events.forEach((event) => {
   docs.push({
     _id: `event-${event.slug}`,
     _type: 'event',
+    kind: event.kind ?? 'event',
     title: event.title,
     slug: slug(event.slug),
     eventDateStart: event.eventDateStart,

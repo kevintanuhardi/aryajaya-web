@@ -16,7 +16,7 @@ export const siteSettings = {
   navLinks: [
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products' },
-    { href: '/events', label: 'Events' },
+    { href: '/events', label: 'News & Events' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' }
   ],

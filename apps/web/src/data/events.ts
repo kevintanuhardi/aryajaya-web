@@ -1,4 +1,10 @@
+export type PostKind = 'news' | 'event' | 'article';
+
+export const postKindLabels: Record<PostKind, string> = { news: 'News', event: 'Event', article: 'Article' };
+
+/** A News & Events post. Named EventItem for history; `kind` says what it is. */
 export type EventItem = {
+  kind: PostKind;
   slug: string;
   title: string;
   createdAt: string;
@@ -11,7 +17,7 @@ export type EventItem = {
   sourceLabel: string;
 };
 
-const baseEvents: EventItem[] = [
+const baseEvents: Omit<EventItem, 'kind'>[] = [
   {
     slug: 'factory-visit-baui-spine-taiwan',
     title: 'Strategic Insight: Exploring Innovation at the Baui Spine Factory, Taiwan',
@@ -82,6 +88,8 @@ const baseEvents: EventItem[] = [
   }
 ];
 
-export const events = [...baseEvents].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+export const events: EventItem[] = baseEvents
+  .map((event) => ({ kind: 'event' as const, ...event }))
+  .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
 export const getEvent = (slug: string) => events.find((event) => event.slug === slug);
