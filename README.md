@@ -116,7 +116,37 @@ CI (`.github/workflows/ci.yml`) runs `npm install`, `npm test`, `npm run build:w
 - If self-hosting (e.g., Netlify/Vercel SPA), run `npm run build:studio` and deploy the `apps/studio/dist` folder.
 
 ## TODO / Next Steps
-- Seed the Sanity dataset and add the Vercel deploy hook as a Sanity webhook.
-- Add verified license, IPAK, ISO, and regulatory documents once available.
-- Expand Sanity schemas with localization, spec tables, or regulatory uploads as needed.
-- Add analytics / consent tooling prior to production launch.
+
+### 1. Go live with Sanity (owner, ~30 min)
+- [x] Seed the Sanity dataset (53 documents + images/PDFs imported).
+- [ ] Vercel → Environment Variables: `SANITY_PROJECT_ID=u6oj3dj3`, `SANITY_DATASET=production`.
+- [ ] Merge PR #1 → Vercel deploys `master` to production.
+- [ ] Vercel Deploy Hook → add as Sanity webhook (sanity.io/manage → API → Webhooks) so publishing rebuilds the site.
+- [ ] `npm run deploy:studio` → hosted dashboard at `*.sanity.studio`; add that URL to Sanity CORS origins.
+- [ ] Invite editors (Administrator role on the free plan); keep `SANITY_STUDIO_OWNER_IDS` to owners only.
+- [ ] Rename keys in the main checkout's `apps/studio/.env.local` to `SANITY_STUDIO_*` and add `SANITY_STUDIO_OWNER_IDS`.
+
+### 2. Domain & SEO (before announcing the site)
+- [ ] Connect the real domain in Vercel and replace the placeholder `https://www.arjaya.example` in `astro.config.mjs` and the home page structured data.
+- [ ] Add `@astrojs/sitemap` and `public/robots.txt`; submit the sitemap in Google Search Console.
+- [ ] Add canonical URL and Open Graph / Twitter tags (title, description, image) in `BaseLayout.astro` for link previews on WhatsApp/LinkedIn.
+- [ ] Add a custom `404.astro` page.
+- [ ] Create/verify a Google Business Profile with the same name, address and WhatsApp number.
+
+### 3. Performance
+- [ ] Images: `public/images` is ~41 MB of PNGs. Request Sanity images with `?w=…&auto=format` (WebP/AVIF, right size) and add `width`/`height` to `<img>` to avoid layout shift.
+- [ ] Remove the unused `Hero.astro` and `CategoryHighlights.astro` components.
+- [ ] Run Lighthouse on mobile and fix anything below 90.
+
+### 4. Content & compliance
+- [ ] Add verified license, IPAK, ISO and regulatory documents once available.
+- [ ] Alt text for product and post images (add an `alt` field in Sanity).
+- [ ] Privacy policy page; analytics (e.g. Vercel Web Analytics, no cookies) or a consent banner if using Google Analytics.
+- [ ] Decide on Indonesian/English: most visitors are likely Indonesian; consider an `id` locale with Sanity field-level translations.
+- [ ] Review product copy for exaggerated clinical claims (medical compliance).
+
+### 5. Maintenance
+- [ ] Enable Dependabot (or Renovate) for npm updates; CI already runs tests on every PR.
+- [ ] Upgrade path: Sanity v4 and Astro 5 need Node 20+ (CI already uses Node 22).
+- [ ] Optional: draft preview for editors (Sanity Presentation tool) — needs a server-rendered preview route.
+- [ ] Optional: Playwright smoke tests in a real browser (sliders, mobile menu, product filter).
