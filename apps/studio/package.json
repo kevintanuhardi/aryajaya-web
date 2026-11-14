@@ -9,7 +9,10 @@
     "deploy": "sanity deploy",
     "lint": "sanity check",
     "seed:generate": "node --experimental-strip-types --no-warnings scripts/generate-seed.mjs",
-    "seed:import": "sanity dataset import seed/content.ndjson production --replace"
+    "seed:import": "sanity dataset import seed/content.ndjson production --replace",
+    "typecheck": "tsc --noEmit -p .",
+    "validate:schema": "SANITY_STUDIO_PROJECT_ID=${SANITY_STUDIO_PROJECT_ID:-ci-dummy} sanity schema validate",
+    "test": "npm run typecheck && npm run validate:schema"
   },
   "dependencies": {
     "@sanity/icons": "^2.11.3",
