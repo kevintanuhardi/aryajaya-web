@@ -1,18 +1,18 @@
 ---
-import { productCategories } from '../data/categories';
+import { productCategories } from '../lib/content';
 ---
 <section class="bg-white">
-  <div class="mx-auto max-w-6xl px-4 py-16">
+  <div class="container-page section">
     <div class="mb-10 max-w-2xl">
-      <p class="text-sm font-semibold uppercase tracking-wide text-brand">Product Lines</p>
-      <h2 class="text-3xl font-semibold text-slate-900">Arjaya Langgeng Medika clinical focus</h2>
-      <p class="mt-4 text-slate-600">Priority product categories supporting orthopedic hospitals and spine surgery centers.</p>
+      <p class="eyebrow">Product Lines</p>
+      <h2 class="heading-section">Arjaya Langgeng Medika clinical focus</h2>
+      <p class="mt-4 text-ink-600">Priority product categories supporting orthopedic hospitals and spine surgery centers.</p>
     </div>
     <div class="grid gap-6 md:grid-cols-3">
       {productCategories.map((category) => (
-        <article class="rounded-2xl border border-slate-100 bg-slate-50/60 p-6">
+        <article class="card-muted">
           <p class="text-sm font-semibold text-brand">{category.name}</p>
-          <p class="mt-2 text-sm text-slate-600">{category.description}</p>
+          <p class="mt-2 text-sm text-ink-600">{category.description}</p>
         </article>
       ))}
     </div>

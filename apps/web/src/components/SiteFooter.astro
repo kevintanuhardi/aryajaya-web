@@ -1,29 +1,29 @@
 ---
-import { siteSettings } from '../data/siteSettings';
+import { siteSettings } from '../lib/content';
 ---
-<footer class="bg-slate-900 text-slate-100">
+<footer class="bg-ink-900 text-ink-100">
   <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 md:flex-row md:items-start md:justify-between">
     <div class="space-y-3">
       <div class="flex items-center gap-3">
         <img src={siteSettings.logo} alt={`${siteSettings.name} logo`} class="h-12 w-12 rounded-full bg-white object-contain p-1" />
         <p class="text-lg font-semibold">{siteSettings.name}</p>
       </div>
-      <p class="text-sm text-slate-300">{siteSettings.tagline}</p>
-      <p class="text-xs text-amber-200 max-w-xl">
+      <p class="text-sm text-ink-300">{siteSettings.tagline}</p>
+      <p class="text-xs text-accent-200 max-w-xl">
         {siteSettings.disclaimer}
       </p>
     </div>
     <div class="space-y-2 text-sm">
-      <p class="font-semibold text-white">Contact</p>
+      <p class="font-semibold text-white">{siteSettings.footerContactHeading}</p>
       <p>{siteSettings.address}</p>
       <a class="text-brand block" href={siteSettings.mapUrl} target="_blank" rel="noreferrer">
-        View location on Google Maps
+        {siteSettings.footerMapLinkLabel}
       </a>
       <p>WhatsApp: {siteSettings.whatsapp}</p>
     </div>
     {siteSettings.socials.length > 0 && (
       <div class="space-y-2 text-sm">
-        <p class="font-semibold text-white">Follow Us</p>
+        <p class="font-semibold text-white">{siteSettings.footerSocialHeading}</p>
         <ul class="space-y-1">
           {siteSettings.socials.map((social) => (
             <li>
@@ -36,7 +36,7 @@ import { siteSettings } from '../data/siteSettings';
       </div>
     )}
   </div>
-  <div class="border-t border-slate-800 px-4 py-4 text-center text-xs text-slate-400">
+  <div class="border-t border-ink-800 px-4 py-4 text-center text-xs text-ink-400">
     © {new Date().getFullYear()} {siteSettings.name}. All rights reserved.
   </div>
 </footer>

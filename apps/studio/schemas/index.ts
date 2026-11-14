@@ -1,6 +1,42 @@
 import siteSettings from './siteSettings';
+import homePage from './homePage';
+import aboutPage from './aboutPage';
+import contactPage from './contactPage';
+import listingPages from './listingPages';
 import license from './license';
 import productCategory from './productCategory';
 import product from './product';
+import event from './event';
+import sectionHeading from './objects/sectionHeading';
+import callToAction from './objects/callToAction';
+import seo from './objects/seo';
+import { editorTypes, isOwner } from '../src/access';
 
-export const schemaTypes = [siteSettings, license, productCategory, product];
+/** Layout/page documents: read-only for anyone who is not an owner (see src/access.ts). */
+const adminOnly = <T extends { name: string }>(type: T): T =>
+  editorTypes.has(type.name)
+    ? type
+    : { ...type, readOnly: ({ currentUser }: { currentUser?: Parameters<typeof isOwner>[0] }) => !isOwner(currentUser) };
+
+const documentTypes = [
+  siteSettings,
+  homePage,
+  aboutPage,
+  contactPage,
+  listingPages,
+  productCategory,
+  product,
+  event,
+  license
+].map(adminOnly);
+
+export const schemaTypes = [
+  // Reusable field groups
+  sectionHeading,
+  callToAction,
+  seo,
+  ...documentTypes
+];
+
+/** Document types that exist exactly once (edited from fixed desk items). */
+export const singletonTypes = new Set(['siteSettings', 'homePage', 'aboutPage', 'contactPage', 'listingPages']);

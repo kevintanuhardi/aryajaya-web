@@ -1,29 +1,33 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import InquiryBanner from '../components/InquiryBanner.astro';
+import { aboutPage, siteSettings } from '../lib/content';
 ---
-<BaseLayout title="About Arjaya" description="Arjaya Langgeng Medika company profile">
+<BaseLayout title={aboutPage.seo.title} description={aboutPage.seo.description}>
   <section class="bg-white">
     <div class="mx-auto max-w-5xl px-4 py-16">
-      <p class="text-sm font-semibold uppercase tracking-wide text-brand">About us</p>
-      <h1 class="mt-2 text-4xl font-semibold text-slate-900">Medical supply company specializing in orthopedic products and solutions</h1>
+      <p class="eyebrow">{aboutPage.eyebrow}</p>
+      <h1 class="mt-2 text-4xl font-semibold text-ink-900">{aboutPage.heading}</h1>
+      {aboutPage.image && (
+        <img
+          src={aboutPage.image}
+          alt={aboutPage.imageAlt}
+          class="mt-8 max-h-[420px] w-full rounded-3xl bg-ink-50 object-cover shadow-lg"
+          loading="lazy"
+        />
+      )}
       <div class="mt-8 grid gap-10 md:grid-cols-2">
-        <div class="space-y-4 text-slate-600">
-          <p>
-            Arjaya Langgeng Medika is a medical supply company specializing in orthopedic products and solutions. We provide comprehensive support for musculoskeletal care, including trauma, spine, hip, knee, and other orthopedic subspecialties.
-          </p>
-          <p>
-            Our team collaborates with trusted international manufacturers and partners with government and private hospitals across Indonesia.
-          </p>
+        <div class="space-y-4 text-ink-600">
+          {aboutPage.leftColumn.map((paragraph) => <p>{paragraph}</p>)}
         </div>
-        <div class="space-y-4 text-slate-600">
-          <p>
-            We are committed to delivering high-quality products, professional service, and innovative solutions to support better patient outcomes nationwide.
-          </p>
-          <p class="rounded-2xl bg-slate-50 p-4 text-sm text-slate-500">
-            <strong class="block text-slate-800">Disclaimer:</strong>
-            The information on this website is for educational purposes and is not a substitute for a doctor's consultation. Medical devices should be used according to their official indications and instructions for use.
-          </p>
+        <div class="space-y-4 text-ink-600">
+          {aboutPage.rightColumn.map((paragraph) => <p>{paragraph}</p>)}
+          {aboutPage.showDisclaimer && (
+            <p class="rounded-2xl bg-ink-50 p-4 text-sm text-ink-500">
+              <strong class="block text-ink-800">{aboutPage.disclaimerLabel}</strong>
+              {siteSettings.disclaimer}
+            </p>
+          )}
         </div>
       </div>
     </div>

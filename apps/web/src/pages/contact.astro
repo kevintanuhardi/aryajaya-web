@@ -1,43 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WhatsappButton from '../components/WhatsappButton.astro';
-import { siteSettings } from '../data/siteSettings';
+import { contactPage, siteSettings } from '../lib/content';
 ---
-<BaseLayout title="Contact Arjaya" description="Get in touch with Arjaya Langgeng Medika">
+<BaseLayout title={contactPage.seo.title} description={contactPage.seo.description}>
   <section class="bg-white">
     <div class="mx-auto max-w-5xl px-4 py-16">
-      <h1 class="text-4xl font-semibold text-slate-900">Contact & Location</h1>
-      <p class="mt-4 text-slate-600">
-        For product demos and medical device procurement needs, contact our team via WhatsApp or visit our office in South Jakarta.
-      </p>
+      <h1 class="text-4xl font-semibold text-ink-900">{contactPage.heading}</h1>
+      {contactPage.intro && <p class="mt-4 text-ink-600">{contactPage.intro}</p>}
       <div class="mt-10 grid gap-8 md:grid-cols-2">
         <div class="space-y-4">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Address</p>
-            <p class="text-slate-700">{siteSettings.address}</p>
+            <p class="text-xs font-semibold uppercase tracking-wide text-ink-500">Address</p>
+            <p class="text-ink-700">{siteSettings.address}</p>
           </div>
           <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">WhatsApp</p>
-            <p class="text-slate-700">{siteSettings.whatsapp}</p>
+            <p class="text-xs font-semibold uppercase tracking-wide text-ink-500">WhatsApp</p>
+            <p class="text-ink-700">{siteSettings.whatsapp}</p>
             <div class="mt-2">
               <WhatsappButton />
             </div>
           </div>
           {siteSettings.email && (
             <div>
-              <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Email</p>
+              <p class="text-xs font-semibold uppercase tracking-wide text-ink-500">Email</p>
               <a class="text-brand" href={`mailto:${siteSettings.email}`}>{siteSettings.email}</a>
             </div>
           )}
           <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Maps</p>
+            <p class="text-xs font-semibold uppercase tracking-wide text-ink-500">Maps</p>
             <a href={siteSettings.mapUrl} target="_blank" rel="noreferrer" class="text-brand">Open in Google Maps</a>
           </div>
         </div>
         <div class="w-full overflow-hidden rounded-3xl shadow-lg">
           <iframe
             title="Arjaya Location"
-            src="https://www.google.com/maps?q=Graha%20Simatupang%20Tower%202C%20Jakarta&output=embed"
+            src={contactPage.mapEmbedUrl}
             width="100%"
             height="320"
             loading="lazy"
@@ -45,9 +43,7 @@ import { siteSettings } from '../data/siteSettings';
           ></iframe>
         </div>
       </div>
-      <p class="mt-8 rounded-2xl bg-slate-50 p-4 text-xs text-slate-600">
-        The information on this website is for educational purposes and is not a substitute for a doctor's consultation. Medical devices should be used according to their official indications and instructions for use.
-      </p>
+      <p class="mt-8 rounded-2xl bg-ink-50 p-4 text-xs text-ink-600">{siteSettings.disclaimer}</p>
     </div>
   </section>
 </BaseLayout>

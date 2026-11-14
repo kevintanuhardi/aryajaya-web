@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      # Dummy Sanity project ID, used only so the Studio config loads for type-check,
+      # schema validation and the Studio build. Nothing here talks to Sanity.
+      # The website build leaves SANITY_PROJECT_ID unset, so it uses local src/data.
+      # Deploys are handled separately by Vercel.
+      SANITY_STUDIO_PROJECT_ID: ci-dummy
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # package-lock.json is gitignored, so `npm ci` is not available.
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      # Web unit + integration tests, then Studio type-check + schema validation.
+      - name: Test
+        run: npm test
+
+      - name: Build website
+        run: npm run build:web
+
+      - name: Build Studio
+        run: npm run build:studio

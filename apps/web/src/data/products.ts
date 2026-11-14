@@ -1,5 +1,4 @@
-import type { ProductCategory } from './categories';
-import { productCategories } from './categories';
+import type { ProductCategory } from './categories.ts';
 
 export type Product = {
   slug: string;
@@ -921,9 +920,3 @@ export const products: Product[] = baseProducts.map((product) => ({
   ...product,
   ...(catalogUrls[product.slug] ? { catalogUrl: catalogUrls[product.slug] } : {})
 }));
-
-export const getCategory = (id: ProductCategory['id']) =>
-  productCategories.find((category) => category.id === id);
-
-export const getEcatalogProducts = () =>
-  products.filter((product) => Boolean(product.catalogUrl));

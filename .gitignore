@@ -19,6 +19,12 @@ apps/studio/.sanity/
 
 # Env files
 apps/studio/.env*
+!apps/studio/.env.example
+apps/web/.env*
+!apps/web/.env.example
+
+# Generated Sanity seed (contains absolute file paths)
+apps/studio/seed/content.ndjson
 
 # Mac / IDE junk
 .DS_Store

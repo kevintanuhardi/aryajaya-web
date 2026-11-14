@@ -1,22 +1,13 @@
 ---
-import { siteSettings } from '../data/siteSettings';
+import { siteSettings } from '../lib/content';
 
-const { label = 'Consult via WhatsApp', size = 'md' } = Astro.props as {
+const { label = siteSettings.whatsappButtonLabel, size = 'md' } = Astro.props as {
   label?: string;
   size?: 'sm' | 'md' | 'lg';
 };
 
-const sizeClasses = {
-  sm: 'text-xs px-3 py-2',
-  md: 'text-sm px-4 py-2.5',
-  lg: 'text-base px-6 py-3'
-}[size];
+const sizeClass = { sm: 'btn-sm', md: '', lg: 'btn-lg' }[size];
 ---
-<a
-  href={siteSettings.whatsappLink}
-  target="_blank"
-  rel="noreferrer"
-  class={`inline-flex items-center gap-2 rounded-full bg-brand font-semibold text-white shadow-lg shadow-brand/30 transition hover:bg-brand-dark ${sizeClasses}`}
->
+<a href={siteSettings.whatsappLink} target="_blank" rel="noreferrer" class:list={['btn btn-primary', sizeClass]}>
   <span>{label}</span>
 </a>

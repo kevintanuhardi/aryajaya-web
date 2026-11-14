@@ -1,22 +1,22 @@
 ---
 import WhatsappButton from './WhatsappButton.astro';
-import { siteSettings } from '../data/siteSettings';
+import { siteSettings } from '../lib/content';
 ---
-<section class="bg-gradient-to-br from-white via-slate-50 to-emerald-50">
+<section class="bg-gradient-to-br from-white via-ink-50 to-brand-50">
   <div class="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-2 md:items-center">
     <div class="space-y-6">
-      <p class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1 text-xs font-semibold uppercase tracking-wide text-brand shadow">
+      <p class="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1 eyebrow-sm shadow">
         Orthopedic & Spine Specialists
       </p>
-      <h1 class="text-4xl font-semibold leading-tight text-slate-900 md:text-5xl">
+      <h1 class="text-4xl font-semibold leading-tight text-ink-900 md:text-5xl">
         {siteSettings.name}
       </h1>
-      <p class="text-lg text-slate-600">
+      <p class="text-lg text-ink-600">
         Distribution partner for orthopedic, spine, and operating room navigation medical devices for hospitals and clinics across Indonesia.
       </p>
       <div class="flex flex-wrap gap-4">
         <WhatsappButton size="lg" />
-        <a href="/products" class="inline-flex items-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700">
+        <a href="/products" class="btn btn-secondary px-6 py-3">
           View Products
         </a>
       </div>
@@ -24,20 +24,20 @@ import { siteSettings } from '../data/siteSettings';
     <div class="rounded-3xl bg-white p-6 shadow-2xl shadow-brand/10">
       <dl class="grid grid-cols-2 gap-6 text-center">
         <div>
-          <dt class="text-sm text-slate-500">Product Categories</dt>
-          <dd class="text-3xl font-semibold text-slate-900">3</dd>
+          <dt class="text-sm text-ink-500">Product Categories</dt>
+          <dd class="heading-section">3</dd>
         </div>
         <div>
-          <dt class="text-sm text-slate-500">Clinical Focus</dt>
-          <dd class="text-3xl font-semibold text-slate-900">Orthopedics</dd>
+          <dt class="text-sm text-ink-500">Clinical Focus</dt>
+          <dd class="heading-section">Orthopedics</dd>
         </div>
         <div>
-          <dt class="text-sm text-slate-500">Service Area</dt>
-          <dd class="text-3xl font-semibold text-slate-900">Nationwide</dd>
+          <dt class="text-sm text-ink-500">Service Area</dt>
+          <dd class="heading-section">Nationwide</dd>
         </div>
         <div>
-          <dt class="text-sm text-slate-500">WhatsApp Response</dt>
-          <dd class="text-3xl font-semibold text-slate-900">&lt; 1 day</dd>
+          <dt class="text-sm text-ink-500">WhatsApp Response</dt>
+          <dd class="heading-section">&lt; 1 day</dd>
         </div>
       </dl>
     </div>

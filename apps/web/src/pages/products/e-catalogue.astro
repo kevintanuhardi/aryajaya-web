@@ -1,21 +1,23 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ECatalogSection from '../../components/ECatalogSection.astro';
-import { getEcatalogProducts } from '../../data/products';
+import { getEcatalogProducts, listingPages } from '../../lib/content';
 
 const items = getEcatalogProducts();
+const { seo, intro } = listingPages.ecatalogue;
 ---
-<BaseLayout title="Arjaya E-Catalogue" description="Official e-catalogue product listings from Arjaya Langgeng Medika">
+<BaseLayout title={seo.title} description={seo.description}>
   <section class="bg-white">
-    <div class="mx-auto max-w-6xl px-4 py-16">
-      <nav class="text-sm text-slate-500">
+    <div class="container-page section">
+      <nav class="text-sm text-ink-500">
         <a href="/products" class="hover:text-brand">← Back to products</a>
       </nav>
     </div>
   </section>
   <ECatalogSection
     items={items}
-    heading="Official E-Catalogue Listings"
-    description="Browse products with active official INAPROC e-catalogue entries. Each card links directly to the listing and to the corresponding product detail page."
+    eyebrow={intro.eyebrow}
+    heading={intro.heading}
+    description={intro.description}
   />
 </BaseLayout>

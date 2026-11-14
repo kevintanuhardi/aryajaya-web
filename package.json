@@ -12,7 +12,10 @@
     "build:web": "npm run build --workspace=@aryajaya/web",
     "build:studio": "npm run build --workspace=@aryajaya/studio",
     "build": "npm run build:web && npm run build:studio",
-    "deploy:studio": "npm run deploy --workspace=@aryajaya/studio"
+    "deploy:studio": "npm run deploy --workspace=@aryajaya/studio",
+    "test:web": "npm run test --workspace=@aryajaya/web",
+    "test:studio": "npm run test --workspace=@aryajaya/studio",
+    "test": "npm run test:web && npm run test:studio"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

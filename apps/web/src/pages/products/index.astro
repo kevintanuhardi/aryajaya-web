@@ -1,17 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductCard from '../../components/ProductCard.astro';
-import { productCategories } from '../../data/categories';
-import { getEcatalogProducts, products } from '../../data/products';
+import { productCategories } from '../../lib/content';
+import { getEcatalogProducts, listingPages, products } from '../../lib/content';
+
+const { seo, intro, ecatalogueTeaser } = listingPages.products;
 ---
-<BaseLayout title="Arjaya Products" description="Catalog of trauma, spine, arthroplasty, and navigation medical devices">
+<BaseLayout title={seo.title} description={seo.description}>
   <section class="bg-white">
-    <div class="mx-auto max-w-6xl px-4 py-16">
+    <div class="container-page section">
       <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <p class="text-sm font-semibold uppercase tracking-wide text-brand">Catalog</p>
-          <h1 class="text-4xl font-semibold text-slate-900">Trauma, Spine & Arthroplasty Products</h1>
-          <p class="mt-2 text-sm text-slate-600">Arjaya Langgeng Medika's product portfolio based on the available catalog and product materials.</p>
+          <p class="eyebrow">{intro.eyebrow}</p>
+          <h1 class="text-4xl font-semibold text-ink-900">{intro.heading}</h1>
+          {intro.description && <p class="mt-2 text-sm text-ink-600">{intro.description}</p>}
         </div>
       </div>
       <div class="mb-8 flex flex-wrap gap-3">
@@ -19,7 +21,7 @@ import { getEcatalogProducts, products } from '../../data/products';
           href="/products"
           data-filter-link
           data-category="all"
-          class="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+          class="inline-flex items-center rounded-full border border-ink-200 bg-white px-4 py-2 text-sm font-semibold text-ink-700 transition hover:border-ink-300 hover:bg-ink-50"
         >
           All categories
         </a>
@@ -28,26 +30,24 @@ import { getEcatalogProducts, products } from '../../data/products';
             href={`/products?category=${category.id}`}
             data-filter-link
             data-category={category.id}
-            class="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+            class="inline-flex items-center rounded-full border border-ink-200 bg-white px-4 py-2 text-sm font-semibold text-ink-700 transition hover:border-ink-300 hover:bg-ink-50"
           >
             {category.name}
           </a>
         ))}
       </div>
       {getEcatalogProducts().length > 0 && (
-        <div class="mb-10 rounded-3xl border border-brand/10 bg-slate-50 p-6 md:flex md:items-center md:justify-between">
+        <div class="mb-10 rounded-3xl border border-brand/10 bg-ink-50 p-6 md:flex md:items-center md:justify-between">
           <div class="max-w-2xl">
-            <p class="text-sm font-semibold uppercase tracking-wide text-brand">E-Catalogue</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900">Official e-catalogue entries now have a dedicated page</h2>
-            <p class="mt-3 text-sm leading-6 text-slate-600">
-              Browse all products with active official e-catalogue listings in one place, without extending the main products page.
-            </p>
+            <p class="eyebrow">{ecatalogueTeaser.eyebrow}</p>
+            <h2 class="mt-2 text-2xl font-semibold text-ink-900">{ecatalogueTeaser.heading}</h2>
+            <p class="mt-3 text-sm leading-6 text-ink-600">{ecatalogueTeaser.text}</p>
           </div>
           <a
             href="/products/e-catalogue"
-            class="mt-5 inline-flex items-center rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-dark md:mt-0"
+            class="mt-5 btn btn-primary px-5 py-3 md:mt-0"
           >
-            Open e-catalogue page
+            {ecatalogueTeaser.buttonLabel}
           </a>
         </div>
       )}
@@ -58,7 +58,7 @@ import { getEcatalogProducts, products } from '../../data/products';
           </div>
         ))}
       </div>
-      <p class="mt-10 hidden rounded-2xl bg-slate-50 px-4 py-6 text-center text-sm text-slate-600" data-empty-state>
+      <p class="mt-10 hidden rounded-2xl bg-ink-50 px-4 py-6 text-center text-sm text-ink-600" data-empty-state>
         There are currently no products in this category.
       </p>
     </div>
@@ -71,7 +71,7 @@ import { getEcatalogProducts, products } from '../../data/products';
   const emptyState = document.querySelector('[data-empty-state]');
 
   const activeClasses = ['bg-brand', 'text-white', 'border-brand'];
-  const inactiveClasses = ['border-slate-200', 'bg-white', 'text-slate-700'];
+  const inactiveClasses = ['border-ink-200', 'bg-white', 'text-ink-700'];
 
   const applyFilter = () => {
     const params = new URLSearchParams(window.location.search);
