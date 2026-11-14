@@ -28,6 +28,8 @@ const structuredData = isEvent
 <BaseLayout
   title={`${event.title} | Arjaya News & Events`}
   description={event.excerpt}
+  image={event.image || undefined}
+  type="article"
   structuredData={{
     '@context': 'https://schema.org',
     ...structuredData,

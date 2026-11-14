@@ -119,23 +119,24 @@ CI (`.github/workflows/ci.yml`) runs `npm install`, `npm test`, `npm run build:w
 
 ### 1. Go live with Sanity (owner, ~30 min)
 - [x] Seed the Sanity dataset (53 documents + images/PDFs imported).
-- [ ] Vercel → Environment Variables: `SANITY_PROJECT_ID=u6oj3dj3`, `SANITY_DATASET=production`.
-- [ ] Merge PR #1 → Vercel deploys `master` to production.
+- [x] Vercel → Environment Variables: `SANITY_PROJECT_ID=u6oj3dj3`, `SANITY_DATASET=production`.
+- [x] Merge PR #1 → Vercel deploys `master` to production.
 - [ ] Vercel Deploy Hook → add as Sanity webhook (sanity.io/manage → API → Webhooks) so publishing rebuilds the site.
 - [ ] `npm run deploy:studio` → hosted dashboard at `*.sanity.studio`; add that URL to Sanity CORS origins.
 - [ ] Invite editors (Administrator role on the free plan); keep `SANITY_STUDIO_OWNER_IDS` to owners only.
 - [ ] Rename keys in the main checkout's `apps/studio/.env.local` to `SANITY_STUDIO_*` and add `SANITY_STUDIO_OWNER_IDS`.
 
 ### 2. Domain & SEO (before announcing the site)
-- [ ] Connect the real domain in Vercel and replace the placeholder `https://www.arjaya.example` in `astro.config.mjs` and the home page structured data.
-- [ ] Add `@astrojs/sitemap` and `public/robots.txt`; submit the sitemap in Google Search Console.
-- [ ] Add canonical URL and Open Graph / Twitter tags (title, description, image) in `BaseLayout.astro` for link previews on WhatsApp/LinkedIn.
-- [ ] Add a custom `404.astro` page.
+- [ ] Connect the real domain in Vercel, then set `SITE_URL` (e.g. `https://www.example.co.id`) in Vercel env vars. Until then the site uses `https://arjaya-web.vercel.app`.
+- [x] `/sitemap.xml` and `/robots.txt` (generated from content).
+- [ ] Submit the sitemap in Google Search Console.
+- [x] Canonical URL and Open Graph / Twitter tags in `BaseLayout.astro`.
+- [x] Custom `404.astro` page.
 - [ ] Create/verify a Google Business Profile with the same name, address and WhatsApp number.
 
 ### 3. Performance
 - [ ] Images: `public/images` is ~41 MB of PNGs. Request Sanity images with `?w=…&auto=format` (WebP/AVIF, right size) and add `width`/`height` to `<img>` to avoid layout shift.
-- [ ] Remove the unused `Hero.astro` and `CategoryHighlights.astro` components.
+- [x] Remove the unused `Hero.astro` and `CategoryHighlights.astro` components.
 - [ ] Run Lighthouse on mobile and fix anything below 90.
 
 ### 4. Content & compliance
