@@ -50,9 +50,12 @@ The `SANITY_STUDIO_` prefix is required. Sanity only exposes variables with this
 ### What editors can manage
 | Dashboard item | Website |
 | --- | --- |
-| Home Page | Hero slides, featured services, partners, vision & mission |
-| Site Settings | Name, logo, tagline, WhatsApp, address, map, socials, disclaimer |
-| Products (+ Categories) | `/products`, `/products/<slug>`, `/products/e-catalogue` |
+| Pages → Home Page | `/`: hero slides and slide label, featured services, partners, vision & mission, the heading/intro of every section (services, partners, licenses, e-catalogue), the inquiry banner (also on `/about`), SEO title & description |
+| Pages → About Page | `/about`: label, heading, optional image, left/right column paragraphs, disclaimer box on/off and label, SEO |
+| Pages → Contact Page | `/contact`: heading, intro text, embedded map link, SEO (address, WhatsApp, email come from Site Settings) |
+| Pages → Products, E-Catalogue & Events Pages | Heading, intro and SEO of `/products`, `/products/e-catalogue` and `/events`, plus the e-catalogue box on `/products` |
+| Site Settings | Name, logo, tagline, WhatsApp number/link and default button text, address, map, socials, header menu (labels, links, order), footer headings, disclaimer |
+| Products (+ Categories) | Product items on `/products`, `/products/<slug>`, `/products/e-catalogue` |
 | Events | `/events`, `/events/<slug>` |
 | Licenses & Compliance | Licenses section on the home page (status “Active” only) |
 
@@ -64,7 +67,7 @@ npm run seed:import --workspace=@aryajaya/studio     # imports into the "product
 This copies everything the website shows today (including images and brochure PDFs) into Sanity. Re-running `seed:import` overwrites documents with the same IDs, so don’t re-run it after editors have made changes.
 
 ### How the website gets content
-`apps/web/src/lib/content.ts` queries Sanity once per build. For each collection it uses Sanity when there are published documents, otherwise the local files in `apps/web/src/data/`. The site therefore builds before Sanity is seeded, and if Sanity is unreachable.
+`apps/web/src/lib/content.ts` queries Sanity once per build. For each collection it uses Sanity when there are published documents, otherwise the local files in `apps/web/src/data/`; page copy (headings, intros, labels, SEO) falls back field by field, so an empty field shows the text in `apps/web/src/data/pages.ts`, `home.ts` or `siteSettings.ts`. The site therefore builds before Sanity is seeded, and if Sanity is unreachable.
 
 Set these on the website build (Vercel → Project → Environment Variables, or `apps/web/.env`):
 ```

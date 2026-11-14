@@ -7,13 +7,13 @@ import VisionMission from '../components/VisionMission.astro';
 import LicenseList from '../components/LicenseList.astro';
 import ECatalogSection from '../components/ECatalogSection.astro';
 import InquiryBanner from '../components/InquiryBanner.astro';
-import { heroSlides, featuredServices, partners, visionMission } from '../lib/content';
+import { heroSlides, featuredServices, partners, visionMission, homeSections, siteSettings } from '../lib/content';
 import { getEcatalogProducts } from '../lib/content';
 ---
-<BaseLayout title="Arjaya Langgeng Medika" description="Orthopedic, spine, and navigation medical device solutions" structuredData={{
+<BaseLayout title={homeSections.seo.title} description={homeSections.seo.description} structuredData={{
   '@context': 'https://schema.org',
   '@type': 'MedicalBusiness',
-  name: 'Arjaya Langgeng Medika',
+  name: siteSettings.name,
   medicalSpecialty: ['Orthopedic', 'Spine'],
   url: 'https://www.arjaya.example'
 }}>
@@ -24,11 +24,12 @@ import { getEcatalogProducts } from '../lib/content';
   <LicenseList />
   <ECatalogSection
     items={getEcatalogProducts()}
-    heading="Selected E-Catalogue Products"
-    description="Browse selected products with active official INAPROC e-catalogue listings, then continue to the product detail pages for specifications and brochures."
+    eyebrow={homeSections.ecatalogue.eyebrow}
+    heading={homeSections.ecatalogue.heading}
+    description={homeSections.ecatalogue.description}
     limit={6}
     ctaHref="/products/e-catalogue"
-    ctaLabel="View all e-catalogue entries"
+    ctaLabel={homeSections.ecatalogueButtonLabel}
   />
   <InquiryBanner />
 </BaseLayout>

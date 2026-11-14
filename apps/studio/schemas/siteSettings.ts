@@ -1,5 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
-import { CogIcon } from '@sanity/icons';
+import { CogIcon, LinkIcon } from '@sanity/icons';
 
 export default defineType({
   name: 'siteSettings',
@@ -9,6 +9,7 @@ export default defineType({
   groups: [
     { name: 'info', title: 'Company', default: true },
     { name: 'contact', title: 'Contact' },
+    { name: 'navigation', title: 'Menu & footer' },
     { name: 'compliance', title: 'Compliance' }
   ],
   fields: [
@@ -67,9 +68,67 @@ export default defineType({
       group: 'contact',
       validation: (rule) => rule.required()
     }),
+    defineField({
+      name: 'whatsappButtonLabel',
+      type: 'string',
+      title: 'WhatsApp button text',
+      description: 'Default text on WhatsApp buttons, e.g. “Consult via WhatsApp”.',
+      group: 'contact'
+    }),
     defineField({ name: 'email', type: 'string', title: 'Email', group: 'contact' }),
     defineField({ name: 'address', type: 'text', rows: 3, title: 'Address', group: 'contact' }),
     defineField({ name: 'mapUrl', type: 'url', title: 'Google Maps link', group: 'contact' }),
+    defineField({
+      name: 'navLinks',
+      type: 'array',
+      title: 'Header menu',
+      description: 'Links in the top menu, in this order. Drag to reorder.',
+      group: 'navigation',
+      of: [
+        defineArrayMember({
+          name: 'navLink',
+          type: 'object',
+          icon: LinkIcon,
+          fields: [
+            defineField({ name: 'label', type: 'string', title: 'Label', validation: (rule) => rule.required() }),
+            defineField({
+              name: 'href',
+              type: 'string',
+              title: 'Link',
+              description: 'A page on this site such as /products, or a full https:// address.',
+              validation: (rule) =>
+                rule.required().custom((value) =>
+                  !value || value.startsWith('/') || /^https?:\/\//.test(value) || value.startsWith('#')
+                    ? true
+                    : 'Start with “/” for a page on this site, or “https://” for another website.'
+                )
+            })
+          ],
+          preview: { select: { title: 'label', subtitle: 'href' } }
+        })
+      ]
+    }),
+    defineField({
+      name: 'footerContactHeading',
+      type: 'string',
+      title: 'Footer: contact heading',
+      description: 'e.g. “Contact”.',
+      group: 'navigation'
+    }),
+    defineField({
+      name: 'footerMapLinkLabel',
+      type: 'string',
+      title: 'Footer: map link text',
+      description: 'e.g. “View location on Google Maps”.',
+      group: 'navigation'
+    }),
+    defineField({
+      name: 'footerSocialHeading',
+      type: 'string',
+      title: 'Footer: social links heading',
+      description: 'e.g. “Follow Us”. Only shown when there are social links.',
+      group: 'navigation'
+    }),
     defineField({
       name: 'disclaimer',
       type: 'text',

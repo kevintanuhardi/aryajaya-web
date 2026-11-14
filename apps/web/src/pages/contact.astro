@@ -1,15 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WhatsappButton from '../components/WhatsappButton.astro';
-import { siteSettings } from '../lib/content';
+import { contactPage, siteSettings } from '../lib/content';
 ---
-<BaseLayout title="Contact Arjaya" description="Get in touch with Arjaya Langgeng Medika">
+<BaseLayout title={contactPage.seo.title} description={contactPage.seo.description}>
   <section class="bg-white">
     <div class="mx-auto max-w-5xl px-4 py-16">
-      <h1 class="text-4xl font-semibold text-ink-900">Contact & Location</h1>
-      <p class="mt-4 text-ink-600">
-        For product demos and medical device procurement needs, contact our team via WhatsApp or visit our office in South Jakarta.
-      </p>
+      <h1 class="text-4xl font-semibold text-ink-900">{contactPage.heading}</h1>
+      {contactPage.intro && <p class="mt-4 text-ink-600">{contactPage.intro}</p>}
       <div class="mt-10 grid gap-8 md:grid-cols-2">
         <div class="space-y-4">
           <div>
@@ -37,7 +35,7 @@ import { siteSettings } from '../lib/content';
         <div class="w-full overflow-hidden rounded-3xl shadow-lg">
           <iframe
             title="Arjaya Location"
-            src="https://www.google.com/maps?q=Graha%20Simatupang%20Tower%202C%20Jakarta&output=embed"
+            src={contactPage.mapEmbedUrl}
             width="100%"
             height="320"
             loading="lazy"
@@ -45,9 +43,7 @@ import { siteSettings } from '../lib/content';
           ></iframe>
         </div>
       </div>
-      <p class="mt-8 rounded-2xl bg-ink-50 p-4 text-xs text-ink-600">
-        The information on this website is for educational purposes and is not a substitute for a doctor's consultation. Medical devices should be used according to their official indications and instructions for use.
-      </p>
+      <p class="mt-8 rounded-2xl bg-ink-50 p-4 text-xs text-ink-600">{siteSettings.disclaimer}</p>
     </div>
   </section>
 </BaseLayout>

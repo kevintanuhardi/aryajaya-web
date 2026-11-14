@@ -21,9 +21,10 @@ const outFile = resolve(here, '../seed/content.ndjson');
 
 const load = (name) => import(pathToFileURL(join(dataDir, `${name}.ts`)).href);
 
-const [{ siteSettings }, home, { productCategories }, { products }, { events }, { licenses }] = await Promise.all([
+const [{ siteSettings }, home, pages, { productCategories }, { products }, { events }, { licenses }] = await Promise.all([
   load('siteSettings'),
   load('home'),
+  load('pages'),
   load('categories'),
   load('products'),
   load('events'),
@@ -58,6 +59,14 @@ const blocks = (paragraphs) =>
     }));
 
 const slug = (current) => ({ _type: 'slug', current });
+const heading = ({ eyebrow, heading, description }) => ({
+  _type: 'sectionHeading',
+  eyebrow,
+  heading,
+  description: description || undefined
+});
+const callToAction = (cta) => ({ _type: 'callToAction', ...cta });
+const seo = (value) => ({ _type: 'seo', ...value });
 const compact = (doc) => JSON.parse(JSON.stringify(doc)); // drops undefined fields
 
 const docs = [];
@@ -73,13 +82,29 @@ docs.push({
   email: siteSettings.email || undefined,
   address: siteSettings.address,
   mapUrl: siteSettings.mapUrl,
+  whatsappButtonLabel: siteSettings.whatsappButtonLabel,
   socialLinks: siteSettings.socials.map((link) => ({ _key: key(), _type: 'link', ...link })),
+  navLinks: siteSettings.navLinks.map((link) => ({ _key: key(), _type: 'navLink', label: link.label, href: link.href })),
+  footerContactHeading: siteSettings.footerContactHeading,
+  footerMapLinkLabel: siteSettings.footerMapLinkLabel,
+  footerSocialHeading: siteSettings.footerSocialHeading,
   disclaimer: siteSettings.disclaimer
 });
 
+const sections = home.homeSections;
 docs.push({
   _id: 'homePageSingleton',
   _type: 'homePage',
+  seo: seo(sections.seo),
+  heroEyebrow: sections.heroEyebrow,
+  servicesHeading: heading(sections.services),
+  partnersHeading: heading(sections.partners),
+  visionLabel: sections.visionLabel,
+  missionLabel: sections.missionLabel,
+  licensesHeading: heading(sections.licenses),
+  ecatalogueHeading: heading(sections.ecatalogue),
+  ecatalogueButtonLabel: sections.ecatalogueButtonLabel,
+  inquiryBanner: callToAction(sections.inquiryBanner),
   heroSlides: home.heroSlides.map((slide) => ({
     _key: key(),
     _type: 'slide',
@@ -97,6 +122,42 @@ docs.push({
   })),
   vision: home.visionMission.vision,
   mission: home.visionMission.mission
+});
+
+const { aboutPage, contactPage, listingPages } = pages;
+const aboutImage = image(aboutPage.image);
+docs.push({
+  _id: 'aboutPageSingleton',
+  _type: 'aboutPage',
+  seo: seo(aboutPage.seo),
+  eyebrow: aboutPage.eyebrow,
+  heading: aboutPage.heading,
+  image: aboutImage && { ...aboutImage, alt: aboutPage.imageAlt || undefined },
+  leftColumn: aboutPage.leftColumn,
+  rightColumn: aboutPage.rightColumn,
+  showDisclaimer: aboutPage.showDisclaimer,
+  disclaimerLabel: aboutPage.disclaimerLabel
+});
+
+docs.push({
+  _id: 'contactPageSingleton',
+  _type: 'contactPage',
+  seo: seo(contactPage.seo),
+  heading: contactPage.heading,
+  intro: contactPage.intro,
+  mapEmbedUrl: contactPage.mapEmbedUrl
+});
+
+docs.push({
+  _id: 'listingPagesSingleton',
+  _type: 'listingPages',
+  productsIntro: heading(listingPages.products.intro),
+  productsEcatalogueTeaser: callToAction(listingPages.products.ecatalogueTeaser),
+  productsSeo: seo(listingPages.products.seo),
+  ecatalogueIntro: heading(listingPages.ecatalogue.intro),
+  ecatalogueSeo: seo(listingPages.ecatalogue.seo),
+  eventsIntro: heading(listingPages.events.intro),
+  eventsSeo: seo(listingPages.events.seo)
 });
 
 productCategories.forEach((category, index) => {

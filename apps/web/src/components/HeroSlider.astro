@@ -1,5 +1,5 @@
 ---
-import type { heroSlides } from '../lib/content';
+import { homeSections, type heroSlides } from '../lib/content';
 
 const { slides } = Astro.props as { slides: typeof heroSlides };
 const fallbackImage = '/images/client/products/navigation/navi-or.png';
@@ -24,7 +24,7 @@ const sliderId = `hero-slider-${Math.random().toString(36).slice(2, 8)}`;
           <div class="absolute inset-0 bg-ink-950/45" />
           <div class="relative z-10 flex h-full items-center justify-center px-6 text-center">
             <div class="max-w-3xl space-y-4">
-              <p class="text-sm uppercase tracking-[0.2em] text-brand-200">Arjaya Langgeng Medika</p>
+              <p class="text-sm uppercase tracking-[0.2em] text-brand-200">{homeSections.heroEyebrow}</p>
               <h1 class="text-4xl font-semibold leading-tight md:text-5xl">{slide.title}</h1>
               <p class="text-lg text-brand-50 md:text-xl">{slide.subtitle}</p>
             </div>

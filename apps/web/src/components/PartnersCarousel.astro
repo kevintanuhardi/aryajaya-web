@@ -1,5 +1,5 @@
 ---
-import type { partners } from '../lib/content';
+import { homeSections, type partners } from '../lib/content';
 const { items } = Astro.props as { items: typeof partners };
 const fallbackImage = '/images/client/logos/arjaya.png';
 const sliderId = `partners-slider-${Math.random().toString(36).slice(2, 8)}`;
@@ -8,8 +8,9 @@ const sliderId = `partners-slider-${Math.random().toString(36).slice(2, 8)}`;
   <div class="container-page section">
     <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
-        <p class="eyebrow">Partners</p>
-        <h2 class="heading-section">Technology and Manufacturing Partners</h2>
+        <p class="eyebrow">{homeSections.partners.eyebrow}</p>
+        <h2 class="heading-section">{homeSections.partners.heading}</h2>
+        {homeSections.partners.description && <p class="mt-4 text-ink-600">{homeSections.partners.description}</p>}
       </div>
     </div>
     <div class="relative">

@@ -14,16 +14,16 @@ import { siteSettings } from '../lib/content';
       </p>
     </div>
     <div class="space-y-2 text-sm">
-      <p class="font-semibold text-white">Contact</p>
+      <p class="font-semibold text-white">{siteSettings.footerContactHeading}</p>
       <p>{siteSettings.address}</p>
       <a class="text-brand block" href={siteSettings.mapUrl} target="_blank" rel="noreferrer">
-        View location on Google Maps
+        {siteSettings.footerMapLinkLabel}
       </a>
       <p>WhatsApp: {siteSettings.whatsapp}</p>
     </div>
     {siteSettings.socials.length > 0 && (
       <div class="space-y-2 text-sm">
-        <p class="font-semibold text-white">Follow Us</p>
+        <p class="font-semibold text-white">{siteSettings.footerSocialHeading}</p>
         <ul class="space-y-1">
           {siteSettings.socials.map((social) => (
             <li>

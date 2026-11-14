@@ -10,9 +10,20 @@ export default defineType({
     { name: 'hero', title: 'Hero slider', default: true },
     { name: 'services', title: 'Featured services' },
     { name: 'partners', title: 'Partners' },
-    { name: 'about', title: 'Vision & mission' }
+    { name: 'about', title: 'Vision & mission' },
+    { name: 'licenses', title: 'Licenses' },
+    { name: 'ecatalogue', title: 'E-Catalogue' },
+    { name: 'inquiry', title: 'Inquiry banner' },
+    { name: 'seo', title: 'SEO' }
   ],
   fields: [
+    defineField({
+      name: 'heroEyebrow',
+      type: 'string',
+      title: 'Small label above each slide title',
+      description: 'Shown on every slide, e.g. the company name.',
+      group: 'hero'
+    }),
     defineField({
       name: 'heroSlides',
       type: 'array',
@@ -31,6 +42,12 @@ export default defineType({
           preview: { select: { title: 'title', subtitle: 'subtitle', media: 'image' } }
         })
       ]
+    }),
+    defineField({
+      name: 'servicesHeading',
+      type: 'sectionHeading',
+      title: 'Section heading',
+      group: 'services'
     }),
     defineField({
       name: 'featuredServices',
@@ -53,6 +70,12 @@ export default defineType({
       ]
     }),
     defineField({
+      name: 'partnersHeading',
+      type: 'sectionHeading',
+      title: 'Section heading',
+      group: 'partners'
+    }),
+    defineField({
       name: 'partners',
       type: 'array',
       title: 'Partners',
@@ -70,14 +93,57 @@ export default defineType({
         })
       ]
     }),
+    defineField({
+      name: 'visionLabel',
+      type: 'string',
+      title: 'Vision label',
+      description: 'Small label above the vision statement, e.g. “Vision”.',
+      group: 'about'
+    }),
     defineField({ name: 'vision', type: 'text', rows: 3, title: 'Vision', group: 'about' }),
+    defineField({
+      name: 'missionLabel',
+      type: 'string',
+      title: 'Mission label',
+      description: 'Small label above the mission list, e.g. “Mission”.',
+      group: 'about'
+    }),
     defineField({
       name: 'mission',
       type: 'array',
       title: 'Mission statements',
       group: 'about',
       of: [defineArrayMember({ type: 'string' })]
-    })
+    }),
+    defineField({
+      name: 'licensesHeading',
+      type: 'sectionHeading',
+      title: 'Section heading',
+      description: 'The licenses themselves are edited under “Licenses & Compliance”.',
+      group: 'licenses'
+    }),
+    defineField({
+      name: 'ecatalogueHeading',
+      type: 'sectionHeading',
+      title: 'Section heading',
+      description: 'Shows up to six products that have an e-catalogue link.',
+      group: 'ecatalogue'
+    }),
+    defineField({
+      name: 'ecatalogueButtonLabel',
+      type: 'string',
+      title: 'Button label',
+      description: 'Links to the full e-catalogue page.',
+      group: 'ecatalogue'
+    }),
+    defineField({
+      name: 'inquiryBanner',
+      type: 'callToAction',
+      title: 'Inquiry banner',
+      description: 'The coloured band with a WhatsApp button. Also shown at the bottom of the About page.',
+      group: 'inquiry'
+    }),
+    defineField({ name: 'seo', type: 'seo', title: 'Search engines (SEO)', group: 'seo' })
   ],
   preview: {
     prepare: () => ({ title: 'Home Page' })

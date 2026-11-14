@@ -1,5 +1,16 @@
 import type { StructureResolver } from 'sanity/structure';
-import { CalendarIcon, CogIcon, DocumentTextIcon, HomeIcon, PackageIcon, TagIcon } from '@sanity/icons';
+import {
+  CalendarIcon,
+  CogIcon,
+  DocumentsIcon,
+  DocumentTextIcon,
+  EnvelopeIcon,
+  HomeIcon,
+  InfoOutlineIcon,
+  PackageIcon,
+  TagIcon,
+  ThListIcon
+} from '@sanity/icons';
 
 const singleton = (S: Parameters<StructureResolver>[0], type: string, id: string, title: string, icon: typeof HomeIcon) =>
   S.listItem()
@@ -12,7 +23,19 @@ export const structure: StructureResolver = (S) =>
   S.list()
     .title('Arjaya Content')
     .items([
-      singleton(S, 'homePage', 'homePageSingleton', 'Home Page', HomeIcon),
+      S.listItem()
+        .title('Pages')
+        .icon(DocumentsIcon)
+        .child(
+          S.list()
+            .title('Pages')
+            .items([
+              singleton(S, 'homePage', 'homePageSingleton', 'Home Page', HomeIcon),
+              singleton(S, 'aboutPage', 'aboutPageSingleton', 'About Page', InfoOutlineIcon),
+              singleton(S, 'contactPage', 'contactPageSingleton', 'Contact Page', EnvelopeIcon),
+              singleton(S, 'listingPages', 'listingPagesSingleton', 'Products, E-Catalogue & Events Pages', ThListIcon)
+            ])
+        ),
       singleton(S, 'siteSettings', 'siteSettingsSingleton', 'Site Settings', CogIcon),
       S.divider(),
       S.listItem()

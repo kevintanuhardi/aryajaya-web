@@ -1,7 +1,7 @@
 ---
 import { siteSettings } from '../lib/content';
 
-const { label = 'Consult via WhatsApp', size = 'md' } = Astro.props as {
+const { label = siteSettings.whatsappButtonLabel, size = 'md' } = Astro.props as {
   label?: string;
   size?: 'sm' | 'md' | 'lg';
 };

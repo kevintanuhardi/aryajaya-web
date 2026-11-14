@@ -1,14 +1,12 @@
 ---
-import { licenses } from '../lib/content';
+import { homeSections, licenses } from '../lib/content';
 ---
 <section class="bg-ink-900 text-ink-100">
   <div class="container-page section">
     <div class="mb-10 max-w-2xl">
-      <p class="text-sm font-semibold uppercase tracking-wide text-accent-300">Licenses & Compliance</p>
-      <h2 class="text-3xl font-semibold">Company Compliance Registrations</h2>
-      <p class="mt-4 text-ink-300">
-        Registration numbers are displayed for reference. Full certificate documents are not published on the website.
-      </p>
+      <p class="text-sm font-semibold uppercase tracking-wide text-accent-300">{homeSections.licenses.eyebrow}</p>
+      <h2 class="text-3xl font-semibold">{homeSections.licenses.heading}</h2>
+      {homeSections.licenses.description && <p class="mt-4 text-ink-300">{homeSections.licenses.description}</p>}
     </div>
     <div class="grid gap-6 md:grid-cols-2">
       {licenses.map((license) => (

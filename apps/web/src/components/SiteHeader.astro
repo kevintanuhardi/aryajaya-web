@@ -2,13 +2,7 @@
 import { siteSettings } from '../lib/content';
 import WhatsappButton from './WhatsappButton.astro';
 
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/products', label: 'Products' },
-  { href: '/events', label: 'Events' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' }
-];
+const { navLinks } = siteSettings;
 ---
 <header class="sticky top-0 z-50 border-b border-ink-100 bg-white/95 backdrop-blur" data-site-header>
   <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">

@@ -55,3 +55,43 @@ export const visionMission = {
     'To contribute to the advancement of healthcare services nationwide.'
   ]
 };
+
+/** Section headings, labels and SEO for the home page. */
+export const homeSections = {
+  seo: {
+    title: 'Arjaya Langgeng Medika',
+    description: 'Orthopedic, spine, and navigation medical device solutions'
+  },
+  heroEyebrow: 'Arjaya Langgeng Medika',
+  services: {
+    eyebrow: 'Featured Services',
+    heading: "Arjaya's Clinical Approach",
+    description: ''
+  },
+  partners: {
+    eyebrow: 'Partners',
+    heading: 'Technology and Manufacturing Partners',
+    description: ''
+  },
+  visionLabel: 'Vision',
+  missionLabel: 'Mission',
+  licenses: {
+    eyebrow: 'Licenses & Compliance',
+    heading: 'Company Compliance Registrations',
+    description:
+      'Registration numbers are displayed for reference. Full certificate documents are not published on the website.'
+  },
+  ecatalogue: {
+    eyebrow: 'E-Catalogue',
+    heading: 'Selected E-Catalogue Products',
+    description:
+      'Browse selected products with active official INAPROC e-catalogue listings, then continue to the product detail pages for specifications and brochures.'
+  },
+  ecatalogueButtonLabel: 'View all e-catalogue entries',
+  inquiryBanner: {
+    eyebrow: 'Need product recommendations?',
+    heading: 'Discuss your orthopedic needs',
+    text: 'Our clinical team is ready to help select the most relevant product portfolio.',
+    buttonLabel: 'Contact us on WhatsApp'
+  }
+};
