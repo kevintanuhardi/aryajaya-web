@@ -17,7 +17,10 @@ let warned = false;
 export async function sanityFetch<T>(query: string, params: Record<string, unknown> = {}): Promise<T | null> {
   if (!projectId) return null;
 
-  const host = token ? 'api.sanity.io' : 'apicdn.sanity.io';
+  // Always the live API, never the apicdn cache: the publish webhook starts a
+  // build within seconds, before the CDN has caught up, so cached reads could
+  // miss the document that was just published. Builds are rare, so the cost is low.
+  const host = 'api.sanity.io';
   const url = new URL(`https://${projectId}.${host}/v${apiVersion}/data/query/${dataset}`);
   url.searchParams.set('query', query);
   for (const [key, value] of Object.entries(params)) {

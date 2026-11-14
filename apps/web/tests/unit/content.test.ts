@@ -192,7 +192,7 @@ describe('content.ts with a full Sanity response', () => {
     const { fetchMock } = await loadWithCms(fullCms);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const url = new URL(String(fetchMock.mock.calls[0][0]));
-    expect(url.host).toBe('test-project.apicdn.sanity.io');
+    expect(url.host).toBe('test-project.api.sanity.io');
     expect(url.searchParams.get('query')).toContain('_type == "product"');
   });
 

@@ -24,7 +24,7 @@ describe('sanityFetch', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('uses the CDN host without a token and sends no Authorization header', async () => {
+  it('reads the live API (not the apicdn cache) without a token and sends no Authorization header', async () => {
     stubSanityEnv({ SANITY_PROJECT_ID: 'abc123', SANITY_DATASET: 'staging' });
     const fetchMock = stubFetchJson({ result: [] });
     const { sanityFetch } = await loadSanity();
@@ -33,7 +33,7 @@ describe('sanityFetch', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, init] = fetchMock.mock.calls[0];
     const parsed = new URL(String(url));
-    expect(parsed.origin).toBe('https://abc123.apicdn.sanity.io');
+    expect(parsed.origin).toBe('https://abc123.api.sanity.io');
     expect(parsed.pathname).toBe('/v2024-01-01/data/query/staging');
     expect(parsed.searchParams.get('query')).toBe(QUERY);
     expect(parsed.searchParams.get('perspective')).toBe('published');
@@ -48,7 +48,7 @@ describe('sanityFetch', () => {
 
     expect(isSanityConfigured).toBe(true);
     const parsed = new URL(String(fetchMock.mock.calls[0][0]));
-    expect(parsed.host).toBe('studio42.apicdn.sanity.io');
+    expect(parsed.host).toBe('studio42.api.sanity.io');
     expect(parsed.pathname).toBe('/v2024-01-01/data/query/production');
   });
 
