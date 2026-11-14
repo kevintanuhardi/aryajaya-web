@@ -208,7 +208,13 @@ describe('content.ts with a full Sanity response', () => {
       mapUrl: 'https://maps.example.com',
       email: 'hello@example.com',
       socials: [{ label: 'LinkedIn', url: 'https://linkedin.com/x' }],
-      disclaimer: 'CMS disclaimer'
+      disclaimer: 'CMS disclaimer',
+      // Not in the mocked CMS response, so these fall back to local values.
+      whatsappButtonLabel: localSiteSettings.whatsappButtonLabel,
+      navLinks: localSiteSettings.navLinks,
+      footerContactHeading: localSiteSettings.footerContactHeading,
+      footerMapLinkLabel: localSiteSettings.footerMapLinkLabel,
+      footerSocialHeading: localSiteSettings.footerSocialHeading
     });
   });
 
