@@ -15,7 +15,7 @@ import { getEcatalogProducts } from '../lib/content';
   '@type': 'MedicalBusiness',
   name: siteSettings.name,
   medicalSpecialty: ['Orthopedic', 'Spine'],
-  url: 'https://www.arjaya.example'
+  url: Astro.site?.href
 }}>
   <HeroSlider slides={heroSlides} />
   <FeaturedServices services={featuredServices} />

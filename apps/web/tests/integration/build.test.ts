@@ -162,3 +162,35 @@ describe('e-catalogue page', () => {
     expect(missing.map((p) => p.slug)).toEqual([]);
   });
 });
+
+describe('SEO files and tags', () => {
+  const SITE = 'https://arjaya-web.vercel.app';
+  const contentPages = () => [...pages.keys()].filter((route) => route.endsWith('/'));
+
+  it('robots.txt allows crawling and points to the sitemap', () => {
+    const robots = readFileSync(join(outDir, 'robots.txt'), 'utf8');
+    expect(robots).toContain('Allow: /');
+    expect(robots).toContain(`Sitemap: ${SITE}/sitemap.xml`);
+  });
+
+  it('sitemap.xml lists exactly the built pages', () => {
+    const sitemap = readFileSync(join(outDir, 'sitemap.xml'), 'utf8');
+    const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].replace(SITE, '')).sort();
+    expect(listed).toEqual(contentPages().sort());
+  });
+
+  it('gives every page a canonical URL and Open Graph tags with absolute URLs', () => {
+    for (const route of contentPages()) {
+      const html = page(route);
+      expect(html, route).toContain(`<link rel="canonical" href="${SITE}${route}">`);
+      expect(html, route).toMatch(/<meta property="og:title" content="[^"]+">/);
+      expect(html, route).toMatch(new RegExp(`<meta property="og:image" content="https://[^"]+">`));
+    }
+  });
+
+  it('has a 404 page that search engines do not index', () => {
+    const html = page('/404.html');
+    expect(html).toContain('<meta name="robots" content="noindex">');
+    expect(html).toContain('href="/products"');
+  });
+});
